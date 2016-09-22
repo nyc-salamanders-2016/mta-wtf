@@ -1,0 +1,7 @@
+<% xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt')) %>
+<% hash = Hash.from_xml(xml) %>
+<% binding.pry %>
+<% hash['service']['subway']['line'].each do |info| %>
+  <h1><%=info['name']%></h1>
+  <%= raw info['text'] %>
+<% end %>
