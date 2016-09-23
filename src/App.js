@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import Map, {InfoWindow, Marker} from 'google-maps-react'
+// import Map, {InfoWindow, Marker} from 'google-maps-react'
+import GMap from './GMap'
 import './App.css';
 
 
 class App extends Component {
-  onMarkerClick = (mapProps, map, clickEvent) => {
-    console.log(mapProps)
-    console.log(map)
-    console.log(clickEvent)
+  componentDidMount() {
+    this.map = new window.google.maps.Map(this.refs.map, {
+      center: {lat: 40.7048981, lng: -74.012385},
+      zoom: 14
+    })
+
+    this.map.data.loadGeoJson('data.js')
   }
+
   render() {
+    const mapStyle = {
+      width: '100%',
+      height: 500,
+      border: '1px solid black'
+    }
+
     return (
       <div className="App">
         <div className="App-header">
@@ -21,13 +32,9 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <code><pre>{JSON.stringify(this.props)}</pre></code>
-        <Map google={window.google}
-             initialCenter={{lat: 40.705, lng: -74.011}}
-             zoom={14}
-             onReady={(mapProps, map) => console.log(mapProps, map)}
-        />
+        <div ref="map" style={mapStyle} >Mappy mcMapperface</div>
       </div>
-    );
+    )
   }
 }
 

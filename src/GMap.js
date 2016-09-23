@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class GMap extends Component {
   componentDidMount() {
-  this.map = new this.props.google.maps.Map(document.getElementById('map'), {
+      this.map = new this.props.google.maps.Map(document.getElementById('map'), {
       center: {lat: -34, lng: 150},
       zoom: 8
     })
@@ -10,9 +10,7 @@ class GMap extends Component {
 
   render() {
     return (
-      <div>
-        {this.map}
-      </div>
+      <div id='map'/>
     )
   }
 }
