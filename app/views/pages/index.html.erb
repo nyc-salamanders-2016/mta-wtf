@@ -1,7 +1,17 @@
 <% xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt')) %>
 <% hash = Hash.from_xml(xml) %>
-<% binding.pry %>
+
 <% hash['service']['subway']['line'].each do |info| %>
-  <h1><%=info['name']%></h1>
-  <%= raw info['text'] %>
+  <h1>Line(s): <%=info['name']%></h1>
+  <% if info['status'] == "GOOD SERVICE" %>
+    <%= info['status'] %>
+  <% else %>
+  	<% if info['text'].include?('There is no') %>
+  	  <p> Some trains not running on these lines </p>
+    <% elsif info['text'].include?('delays') %>
+      <p> Some trains are delayed on these lines</p>
+    <% else %>
+      <p> Some service problems, worth checking into further </p>
+    <% end %>
+  <% end %>
 <% end %>
