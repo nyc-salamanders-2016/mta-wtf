@@ -17,4 +17,17 @@
     <p><%= raw info ['text'] %></p>
   <% end %>
   <p>===========================================================================================================</p>
+<% hash['service']['subway']['line'].each do |info| %>
+  <h1>Line(s): <%=info['name']%></h1>
+  <% if info['status'] == "GOOD SERVICE" %>
+    <%= info['status'] %>
+  <% else %>
+  	<% if info['text'].include?('There is no') %>
+  	  <p> Some trains not running on these lines </p>
+    <% elsif info['text'].include?('delays') %>
+      <p> Some trains are delayed on these lines</p>
+    <% else %>
+      <p> Some service problems, worth checking into further </p>
+    <% end %>
+  <% end %>
 <% end %>
