@@ -12,7 +12,25 @@ class App extends Component {
       zoom: 14
     })
 
-    this.map.data.loadGeoJson('data.js')
+    // this.map.data.loadGeoJson('data.js')
+    this.renderFlights();
+  }
+
+  renderFlights(){
+    var flightPlanCoordinates = [
+    {lat: 40.706, lng: -74.009},
+    {lat: 40.703, lng: -74.012}
+    ];
+
+    var flightPath = new window.google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: '#FF0000',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+    })
+
+    flightPath.setMap(this.map)
   }
 
   render() {
@@ -24,15 +42,8 @@ class App extends Component {
 
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
         <code><pre>{JSON.stringify(this.props)}</pre></code>
-        <div ref="map" style={mapStyle} >Mappy mcMapperface</div>
+        <div ref="map" style={mapStyle}>Mappy mcMapperface</div>
       </div>
     )
   }
