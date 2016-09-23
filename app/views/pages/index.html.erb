@@ -1,3 +1,20 @@
-<% xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt')) %>
+<% xml = File.read('db/mta_feed/20160923145630.txt')%>
 <% hash = Hash.from_xml(xml) %>
-<%= raw hash['service']['subway']['line'][0]['text'] %>
+<h2>Updated at: <%= hash['service']['timestamp'] %></h2>
+<p>===========================================================================================================</p>
+<% hash['service']['subway']['line'].each do |info| %>
+  <h1><%=info['name']%></h1>
+  <% if info['status'] == "GOOD SERVICE" %>
+    <h2><%= info['status'] %></h2>
+  <% elsif info['status'] == "DELAYS" %>
+    <h2><%= info['status'] %></h2>
+    <p><%= raw info ['text'] %></p>
+  <% elsif info['status'] == "PLANNED WORK" %>
+    <h2><%= info['status'] %></h2>
+    <p><%= raw info ['text'] %></p>
+  <% else %>
+    <h2><%= info['status'] %></h2>
+    <p><%= raw info ['text'] %></p>
+  <% end %>
+  <p>===========================================================================================================</p>
+<% end %>
