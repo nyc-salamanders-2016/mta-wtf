@@ -13,13 +13,29 @@ class App extends Component {
     })
 
     // this.map.data.loadGeoJson('data.js')
-    this.renderFlights();
+
+    const lines = [
+      [
+        {lat: 40.706, lng: -74.009},
+        {lat: 40.702, lng: -74.009}
+      ],
+      [
+        {lat: 40.704, lng: -74.009},
+        {lat: 40.704, lng: -74.011}
+      ],
+      [
+        {lat: 40.702, lng: -74.011},
+        {lat: 40.706, lng: -74.011}
+      ]
+    ]
+
+    lines.forEach((coord_list) => this.drawLine(coord_list))
   }
 
   renderFlights(){
     var flightPlanCoordinates = [
     {lat: 40.706, lng: -74.009},
-    {lat: 40.703, lng: -74.012}
+    {lat: 40.703, lng: -74.009}
     ];
 
     var flightPath = new window.google.maps.Polyline({
@@ -31,6 +47,18 @@ class App extends Component {
     })
 
     flightPath.setMap(this.map)
+  }
+
+  drawLine(coord_list) {
+    console.log(coord_list)
+    const path = new window.google.maps.Polyline({
+      path: coord_list,
+      geodesic: true,
+      strokeColor: '#FF0000',
+      strokeOpacity: 1.0,
+      strokeWeight: 2
+    })
+    path.setMap(this.map)
   }
 
   render() {
