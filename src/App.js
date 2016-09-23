@@ -21,7 +21,11 @@ class App extends Component {
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
         <code><pre>{JSON.stringify(this.props)}</pre></code>
-        <Map google={window.google} initialCenter={{lat: 40.705, lng: -74.011}} zoom={14}/>
+        <Map google={window.google}
+             initialCenter={{lat: 40.705, lng: -74.011}}
+             zoom={14}
+             onReady={(mapProps, map) => console.log(mapProps, map)}
+        />
       </div>
     );
   }
