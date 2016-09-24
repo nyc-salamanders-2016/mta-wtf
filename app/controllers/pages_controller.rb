@@ -16,7 +16,7 @@ class PagesController < ApplicationController
     info = parse_all_live_data(nok)
     render json: info
   end
-  
+
   def all_stations
     lines = Line.all
     stations = []
