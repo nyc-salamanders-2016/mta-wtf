@@ -2,6 +2,11 @@ import React, { Component } from 'react'
 import stops from './stops'
 
 class Map extends Component {
+  constructor() {
+    super()
+
+    this.drawLine = this.drawLine.bind(this)
+  }
   componentDidMount() {
     const google = this.props.google
     this.map = new google.maps.Map(this.refs.map, {
@@ -39,7 +44,7 @@ class Map extends Component {
       strokeOpacity: 1.0,
       strokeWeight: 2
     })
-    google.maps.event.addListener(path, "mouseover", () => console.log("I'm the 1 train!"))
+    google.maps.event.addListener(path, "mouseover", () => this.props.onHover() )
     path.setMap(this.map)
   }
 
