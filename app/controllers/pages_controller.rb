@@ -16,6 +16,15 @@ class PagesController < ApplicationController
     info = parse_all_live_data(nok)
     render json: info
   end
+  
+  def all_stations
+    lines = Line.all
+    stations = []
+    lines.each do |line|
+      stations << line.stations
+    end
+    render json: stations[0].as_json
+  end
 
   private
   def parse_all_live_data(nok)
