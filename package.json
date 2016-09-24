@@ -6,6 +6,7 @@
     "react-scripts": "0.4.3"
   },
   "dependencies": {
+    "csvtojson": "^1.0.2",
     "google-maps": "^3.2.1",
     "google-maps-react": "^1.0.18",
     "react": "^15.3.2",
