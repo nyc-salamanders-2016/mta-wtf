@@ -68,7 +68,7 @@ class Map extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     nextProps.liveStatus.forEach((update) => {
-      if (update.canceled === true) { this.lineObjects[update.line].setMap(null) }
+      if (update.canceled === true) { this.lineObjects[update.line].forEach((segment) => segment.setMap(null)) }
       else { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
     })
   }
@@ -82,7 +82,7 @@ class Map extends React.Component {
     const big_order = this.getStationOrder(remove_from, line) > this.getStationOrder(remove_to, line) ? this.getStationOrder(remove_from, line) : this.getStationOrder(remove_to, line)
     const small_order = this.getStationOrder(remove_from, line) < this.getStationOrder(remove_to, line) ? this.getStationOrder(remove_from, line) : this.getStationOrder(remove_to, line)
     const filtered_line = this.sortStations(line).filter((station) => !(this.getStationOrder(station, line) >= small_order && this.getStationOrder(station, line) <= big_order) )
-    this.lineObjects[line.name].setPath(filtered_line)
+    this.lineObjects[line.name].forEach((segment) => segment.setPath(filtered_line) )
   }
 
 
@@ -154,6 +154,14 @@ class Map extends React.Component {
   //   this.lineObjects[line.name] = path
   // }
 
+  stationPairs(line) {
+    return this.sortStations(line).reduce((results, station, index, stations) => {
+      if (index < stations.length - 1) {
+        return results.concat([[station, stations[index+1]]])
+      } else { return results }
+    }, [])
+  }
+
   drawLine(line) {
     const google = this.props.google
     const lineSymbol = {
@@ -162,24 +170,26 @@ class Map extends React.Component {
         strokeWeight: 4,
         scale: 3
      };
-    // const coords = line.stations.map((station) => new google.maps.LatLng(station.lat, station.lng))
-    const path = new google.maps.Polyline({
-      path: this.sortStations(line),
-      strokeColor: this.lineColors[line.name],
-      strokeOpacity: 0,
-      //set strokeOpacity to 0 for dashed lines and 1 for solid
-      strokeWeight: 4,
-      icons: [{
-            icon: lineSymbol,
-            offset: '0',
-            repeat: '20px'
-          }]
+    this.stationPairs(line).forEach((pair)=> {
+      const path = new google.maps.Polyline({
+        path: pair,
+        strokeColor: this.lineColors[line.name],
+        strokeOpacity: 0,
+        //set strokeOpacity to 0 for dashed lines and 1 for solid
+        strokeWeight: 4,
+        icons: [{
+              icon: lineSymbol,
+              offset: '0',
+              repeat: '20px'
+            }]
+      })
+      // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
+      google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
+      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
+      path.setMap(this.map)
+      // this.lineObjects[line.name] = path
+      this.storeLineSegment(line, path)
     })
-    // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
-    google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
-    google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
-    path.setMap(this.map)
-    this.lineObjects[line.name] = path
   }
 
   storeLineSegment(line, object) {
