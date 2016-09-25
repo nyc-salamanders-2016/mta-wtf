@@ -111,16 +111,9 @@ class Map extends React.Component {
   // }
 
   stationHasMultipleLines(station){
-    if (station.lines.count > 1) {
+    if (station.line_stations.count > 1) {
       return true
     }
-  }
-
-  dashedLinePath(line){
-    let dashedLine = line.stations.filter(function(station){
-      return stationHasMultipleLines(station)
-    })
-    return sortStations(dashedLine)
   }
 
   // drawDashedLine(line){
@@ -157,7 +150,7 @@ class Map extends React.Component {
   }
 
   pairShareLines(pair){
-    if (pair[0].line_stations[0].line_id == pair[1].line_stations[0].line_id){
+    if (this.stationHasMultipleLines(pair[0]) && this.stationHasMultipleLines(pair[1]) && pair[0].line_stations[0].line_id == pair[1].line_stations[0].line_id){
       return true
     }
   }
