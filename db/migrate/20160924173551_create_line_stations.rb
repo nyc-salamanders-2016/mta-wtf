@@ -3,6 +3,7 @@ class CreateLineStations < ActiveRecord::Migration[5.0]
     create_table :line_stations do |t|
       t.references :line, foreign_key: true
       t.references :station, foreign_key: true
+      t.integer :order
 
       t.timestamps
     end

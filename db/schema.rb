@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20160924173551) do
   create_table "line_stations", force: :cascade do |t|
     t.integer  "line_id"
     t.integer  "station_id"
+    t.integer  "order"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["line_id"], name: "index_line_stations_on_line_id", using: :btree
@@ -33,7 +34,6 @@ ActiveRecord::Schema.define(version: 20160924173551) do
 
   create_table "stations", force: :cascade do |t|
     t.string   "name"
-    t.integer  "order"
     t.float    "lat"
     t.float    "lng"
     t.datetime "created_at", null: false

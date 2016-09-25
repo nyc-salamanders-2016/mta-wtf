@@ -3,6 +3,8 @@ class PagesController < ApplicationController
   end
 
   def main
+    @lines = Line.all.as_json(include: { stations: { include: :line_stations}})
+    @stations = Station.all.as_json(include: :lines)
   end
 
   def latest
@@ -21,12 +23,7 @@ class PagesController < ApplicationController
   end
 
   def all_stations
-    lines = Line.all
-    stations = []
-    lines.each do |line|
-      stations << line.stations
-    end
-    render json: stations[0].as_json
+    render json: Line.all.as_json(include: :stations)
   end
 
   private
@@ -35,7 +32,7 @@ class PagesController < ApplicationController
     result += find_all_cancelations(nok)
   end
 
-  def find_cancelations(nok)
+  def find_all_cancelations(nok)
     strings = nok.css('b').map(&:inner_text).select {|string| string.match(/\[(.)\] No trains/) }
     matches = strings.map {|text| text.match(/\[(.)\] No trains (.*)/) }
     matches.map {|match| parse_value(match)}
@@ -50,6 +47,6 @@ class PagesController < ApplicationController
     else
       hash[:canceled] = match[2].match(/between (.*) and (.*)/)[1,2]
     end
-    result << hash
+    hash
   end
 end
