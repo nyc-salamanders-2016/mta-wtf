@@ -110,6 +110,50 @@ class Map extends React.Component {
   //   })
   // }
 
+  // getStationsWithMultipleLines(stations){
+  //   stations.filter(function(station){
+  //     return station.lines.count > 1
+  //   })
+  // }
+
+  stationHasMultipleLines(station){
+    if (station.lines.count > 1) {
+      return true
+    }
+  }
+
+  dashedLinePath(line){
+    let dashedLine = line.stations.filter(function(station){
+      return stationHasMultipleLines(station)
+    })
+    return sortStations(dashedLine)
+  }
+
+  // drawDashedLine(line){
+  //   const google = this.props.google
+  //   const lineSymbol = {
+  //       path: 'M 0,-1 0,1',
+  //       strokeOpacity: 1,
+  //       strokeWeight: 4,
+  //       scale: 3
+  //    };
+  //   const path = new google.maps.Polyline({
+  //     path: this.dashedLinePath(line),
+  //     strokeColor: this.lineColors[line.name],
+  //     strokeOpacity: 0,
+  //     strokeWeight: 4,
+  //     icons: [{
+  //           icon: lineSymbol,
+  //           offset: '0',
+  //           repeat: '20px'
+  //         }]
+  //   })
+  //   // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
+  //   google.maps.event.addListener(path, "mouseover", () => this.props.handleHover(line.name))
+  //   path.setMap(this.map)
+  //   this.lineObjects[line.name] = path
+  // }
+
   drawLine(line) {
     const google = this.props.google
     const lineSymbol = {
