@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20160924173551) do
   end
 
   create_table "stations", force: :cascade do |t|
+    t.string   "mta_id"
     t.string   "name"
     t.float    "lat"
     t.float    "lng"
