@@ -35,7 +35,7 @@
  #info-container {
    margin-top: 20px;
    height: 300px;
-   width: 400px;
+   width: auto;
    background: #ff99c2;
    border: 1px solid black;
    margin-left: 50px;
@@ -46,7 +46,7 @@
    height: 300px;
    background: #ff99c2;
    margin-top: 20px;
-   width: 400px;
+   width: auto;
    border: 1px solid black;
    margin-left: 50px;
    overflow: scroll;
@@ -60,6 +60,6 @@
  #left-content {
    margin-right: 10px;
    overflow: hidden;
-   width: auto;
+   width: 30%;
    float: left;
  }
