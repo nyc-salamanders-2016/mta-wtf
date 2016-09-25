@@ -2,6 +2,9 @@ class PagesController < ApplicationController
   def index
   end
 
+  def main
+  end
+
   def latest
     xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt'))
     hash = Hash.from_xml(xml)
