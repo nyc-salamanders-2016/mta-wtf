@@ -21,12 +21,7 @@ class PagesController < ApplicationController
   end
 
   def all_stations
-    lines = Line.all
-    stations = []
-    lines.each do |line|
-      stations << line.stations
-    end
-    render json: stations[0].as_json
+    render json: Line.all.as_json(include: :stations)
   end
 
   private
