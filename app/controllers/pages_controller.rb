@@ -3,6 +3,7 @@ class PagesController < ApplicationController
   end
 
   def main
+    @lines = Line.all.as_json(include: :stations)
   end
 
   def latest
