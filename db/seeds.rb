@@ -10,7 +10,7 @@ require 'csv'
 path = Rails.root.join('lib', 'seeds', 'stations.csv')
 
 CSV.foreach(path, {headers: true, converters: :numeric, header_converters: :symbol}) do |row|
-  station = Station.find_or_create_by(id: row[:stop_id])
+  station = Station.find_or_create_by(mta_id: row[:stop_id])
   line = Line.find_or_create_by(name: row[:line].to_s)
   unless station.lines.any? {|oldline| oldline.name ==line.name}
     station.lines << line
