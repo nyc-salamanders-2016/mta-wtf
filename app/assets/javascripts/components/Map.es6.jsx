@@ -56,6 +56,15 @@ class Map extends React.Component {
     })
   }
 
+  // getLineCoords(line) {
+  //   const stations = this.sortStations(line)
+  //   return stations.map((station) => {
+  //     let newLng = station.lng + (line.id * 0.0001)
+  //     let newLat = station.lat + (line.id * 0.0001)
+  //     return {lat: newLat, lng: newLng}
+  //   })
+  // }
+
   drawLine(line) {
     const google = this.props.google
     // const coords = line.stations.map((station) => new google.maps.LatLng(station.lat, station.lng))
