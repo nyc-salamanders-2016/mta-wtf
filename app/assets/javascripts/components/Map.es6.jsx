@@ -1,57 +1,91 @@
 class Map extends React.Component {
-  constructor(){
-  super()
-    this.state = {
-      showInfo: false
-  }
-    this.popInfoWindow = this.popInfoWindow.bind(this);
-}
+  constructor() {
+    super()
 
-  popInfoWindow() {
-    this.setState({
-      showInfo: true
-    });
+    this.lineColors = {
+      1: '#EE352E',
+      2: '#EE352E',
+      3: '#EE352E',
+      4: '#00933C',
+      5: '#00933C',
+      6: '#00933C'
+    }
+    this.lineObjects = {}
   }
-
   componentDidMount() {
     const google = this.props.google
-    this.map = new google.maps.Map(this.refs.map, {
-      center: {lat: 40.7048981, lng: -74.012385},
-      zoom: 14
+    if (!this.map) {
+      this.map = new google.maps.Map(this.refs.map, {
+        center: {lat: 40.7048981, lng: -74.012385},
+        zoom: 14
+      })
+
+      this.props.lines.forEach((line) => this.traceLine(line))
+      this.props.stations.forEach((station) => this.markStation(station))
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    nextProps.liveStatus.forEach((update) => {
+      if (update.canceled === true) this.lineObjects[update.line].setMap(null)
     })
-
-    const lines = this.getLines(stops)
-
-    lines.forEach((coord_list) => this.drawLine(coord_list))
   }
 
-  connectLatLng(stopa, stopb) {
-    return [{ lat: stopa.stop_lat, lng: stopa.stop_lon },
-    { lat: stopb.stop_lat, lng: stopb.stop_lon }]
+  traceLine(line) {
+
+    sorted_stations = line.stations.sort((a, b) => {
+      if (a.order > b.order) {
+        return 1
+      } else if (b.order > a.order) {
+        return -1
+      }
+      return 0
+    })
+    this.drawLine(line)
   }
 
-  getLines(stops) {
-    return stops.filter((stop) => stop.line === 1)
-         .reduce(
-           (newArray, stop, index, array) => {
-             if (!(index >= array.length - 2)) {
-               newArray.push(this.connectLatLng(stop, array[index+1]))
-             }
-             return newArray
-         }, [] )
+  checkIfLineRunning(line) {
+    debugger
+    if (
+      this.state.liveStatus &&
+      this.state.liveStatus.find((message) => message.line === line.name) &&
+      this.state.liveStatus.find((message) => message.line === line.name).canceled === true
+    ) { return false } else { return true }
   }
 
-  drawLine(coord_list) {
+  getPairOfCoordinates(stopa, stopb) {
+    return [{ lat: stopa.lat, lng: stopa.lng },
+    { lat: stopb.lat, lng: stopb.lng }]
+  }
+
+  drawLine(line) {
     const google = this.props.google
+
     const path = new google.maps.Polyline({
-      path: coord_list,
+      path: line.stations,
       geodesic: true,
-      strokeColor: '#FF0000',
+      strokeColor: this.lineColors[line.name],
       strokeOpacity: 1.0,
       strokeWeight: 2
     })
-    google.maps.event.addListener(path, "mouseover", () => this.props.handleHover("not key"))
+    google.maps.event.addListener(path, "mouseover", () => this.props.handleHover(line.name))
     path.setMap(this.map)
+    this.lineObjects[line.name] = path
+  }
+
+  storeLineSegment(line, object) {
+    this.lineObjects[line.name] = this.lineObjects[line.name] || []
+    this.lineObjects[line.name].push(object)
+  }
+
+  markStation(station) {
+    const google = this.props.google
+    const circle = new google.maps.Circle({
+      center: new google.maps.LatLng(station.lat, station.lng),
+      radius: 10,
+      fillColor: '#FF0000'
+    })
+    circle.setMap(this.map)
   }
 
   render() {
