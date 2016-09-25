@@ -6,7 +6,8 @@ class App extends React.Component {
       liveStatus: []
     }
 
-    this.switchInfoWindowInformation = this.switchInfoWindowInformation.bind(this)
+    this.setInfoWindowLine = this.setInfoWindowLine.bind(this)
+    this.setInfoWindowStation = this.setInfoWindowStation.bind(this)
     this.mouseCoords = this.mouseCoords.bind(this)
   }
 
@@ -21,9 +22,15 @@ class App extends React.Component {
     })
   }
 
-  switchInfoWindowInformation(line) {
+  setInfoWindowLine(line) {
     this.setState({
-      infoWindow: line
+      infoWindowLine: line
+    })
+  }
+
+  setInfoWindowStation(station) {
+    this.setState({
+      infoWindowStation: station
     })
   }
 
@@ -42,8 +49,8 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-        <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showNow={this.state.infoWindow} />
-        <Map trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} handleHover={this.switchInfoWindowInformation} />
+        <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
+        <Map trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindowLine} stationHover={this.setInfoWindowStation} />
       </div>
     )
   }
