@@ -24,23 +24,42 @@
  }
 
  #map-container {
-   position:absolute;
-   margin-left: 40%;
+   float: right;
+   position: relative;
+   overflow: auto;
+   margin-top: 20px;
+   margin-right: 50px;
+   /*margin-left: 40%;*/
  }
 
  #info-container {
-   position:absolute;
-   height:100;
-   bottom:0;
-   top:0;
-   left:0;
-   right:0;
-   margin-top:90px;
-   margin-bottom:50px;
-   margin-right:0;
-   margin-left:0;
-   padding: 0 10px 0 30px;
-   width:300px;
-   overflow:auto;
-   border: 2px solid;
+   margin-top: 20px;
+   height: 300px;
+   width: 400px;
+   background: #ff99c2;
+   border: 1px solid black;
+   margin-left: 50px;
+   overflow: scroll;
+ }
+
+ #station-container {
+   height: 300px;
+   background: #ff99c2;
+   margin-top: 20px;
+   width: 400px;
+   border: 1px solid black;
+   margin-left: 50px;
+   overflow: scroll;
+ }
+
+ #wrapper {
+   width: 100%;
+   overflow: hidden;
+ }
+
+ #left-content {
+   margin-right: 10px;
+   overflow: hidden;
+   width: auto;
+   float: left;
  }

@@ -177,6 +177,7 @@ class Map extends React.Component {
     })
     // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
     google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
+    google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
     path.setMap(this.map)
     this.lineObjects[line.name] = path
   }
@@ -194,6 +195,7 @@ class Map extends React.Component {
       fillColor: '#FF0000'
     })
     google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(station.name))
+    google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(" "))
     circle.setMap(this.map)
   }
 
