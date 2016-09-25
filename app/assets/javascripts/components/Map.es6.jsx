@@ -19,8 +19,9 @@ class Map extends React.Component {
         center: {lat: 40.7048981, lng: -74.012385},
         zoom: 14
       })
+      google.maps.event.addListener(this.map, 'mousemove', (event) => this.props.trackMouse(event.latLng.lat(), event.latLng.lng()))
 
-      this.props.lines.forEach((line) => this.traceLine(line))
+      this.props.lines.forEach((line) => this.drawLine(line))
       this.props.stations.forEach((station) => this.markStation(station))
     }
   }
@@ -31,17 +32,8 @@ class Map extends React.Component {
     })
   }
 
-  traceLine(line) {
-
-    sorted_stations = line.stations.sort((a, b) => {
-      if (a.order > b.order) {
-        return 1
-      } else if (b.order > a.order) {
-        return -1
-      }
-      return 0
-    })
-    this.drawLine(line)
+  getStationOrder(station, line) {
+    return station.line_stations.find((ls) => ls.line_id === line.id).order
   }
 
   checkIfLineRunning(line) {
@@ -53,21 +45,27 @@ class Map extends React.Component {
     ) { return false } else { return true }
   }
 
-  getPairOfCoordinates(stopa, stopb) {
-    return [{ lat: stopa.lat, lng: stopa.lng },
-    { lat: stopb.lat, lng: stopb.lng }]
+  sortStations(line) {
+    return line.stations.sort((a, b) => {
+      if (this.getStationOrder(a, line) > this.getStationOrder(b, line)) {
+        return 1
+      } else if (this.getStationOrder(b, line) > this.getStationOrder(a, line)) {
+        return -1
+      }
+      return 0
+    })
   }
 
   drawLine(line) {
     const google = this.props.google
-
+    // const coords = line.stations.map((station) => new google.maps.LatLng(station.lat, station.lng))
     const path = new google.maps.Polyline({
-      path: line.stations,
-      geodesic: true,
+      path: this.sortStations(line),
       strokeColor: this.lineColors[line.name],
       strokeOpacity: 1.0,
       strokeWeight: 2
     })
+    // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
     google.maps.event.addListener(path, "mouseover", () => this.props.handleHover(line.name))
     path.setMap(this.map)
     this.lineObjects[line.name] = path
@@ -81,7 +79,7 @@ class Map extends React.Component {
   markStation(station) {
     const google = this.props.google
     const circle = new google.maps.Circle({
-      center: new google.maps.LatLng(station.lat, station.lng),
+      center: station,
       radius: 10,
       fillColor: '#FF0000'
     })

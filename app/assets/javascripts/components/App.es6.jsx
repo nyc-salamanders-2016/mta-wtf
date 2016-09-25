@@ -7,6 +7,7 @@ class App extends React.Component {
     }
 
     this.switchInfoWindowInformation = this.switchInfoWindowInformation.bind(this)
+    this.mouseCoords = this.mouseCoords.bind(this)
   }
 
   componentDidMount() {
@@ -26,6 +27,13 @@ class App extends React.Component {
     })
   }
 
+  mouseCoords(lat, lng) {
+    this.setState({
+      mouseLat: lat,
+      mouseLng: lng
+    })
+  }
+
   render() {
     const mapStyle = {
       width: '80%',
@@ -34,8 +42,8 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-        <InfoWindow lines={this.props.lines} showNow={this.state.infoWindow} />
-        <Map liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} handleHover={this.switchInfoWindowInformation} />
+        <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showNow={this.state.infoWindow} />
+        <Map trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} handleHover={this.switchInfoWindowInformation} />
       </div>
     )
   }

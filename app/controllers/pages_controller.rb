@@ -3,7 +3,7 @@ class PagesController < ApplicationController
   end
 
   def main
-    @lines = Line.all.as_json(include: :stations)
+    @lines = Line.all.as_json(include: { stations: { include: :line_stations}})
     @stations = Station.all.as_json(include: :lines)
   end
 
