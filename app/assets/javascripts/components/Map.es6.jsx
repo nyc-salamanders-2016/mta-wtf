@@ -20,7 +20,7 @@ class Map extends React.Component {
       G: '#6CBE45',
       J: '#996633',
       Z: '#996633',
-      J: '#A7A9AC',
+      L: '#A7A9AC',
       N: '#FCCC0A',
       Q: '#FCCC0A',
       R: '#FCCC0A',
