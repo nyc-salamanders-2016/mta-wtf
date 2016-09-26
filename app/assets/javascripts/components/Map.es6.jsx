@@ -101,6 +101,7 @@ class Map extends React.Component {
       if (update.canceled === true) { this.lineObjects[update.line].forEach((segment) => segment.setMap(null)) }
       else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
     })
+
   }
 
   removeClosedStations(line_name, first_station_name, last_station_name) {
