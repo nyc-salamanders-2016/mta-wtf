@@ -133,31 +133,36 @@ class Map extends React.Component {
   drawLine(line) {
     const google = this.props.google
     this.stationPairs(line).forEach((pair)=> {
-      const lineSymbol = {
-            path: 'M 0,-1 0,1',
-            strokeOpacity: 1,
-            strokeWeight: 3,
-            scale: 3
-         };
-      const dashed = [{
-            icon: lineSymbol,
-            offset: '0',
-            repeat: '20px'
-        }]
-        //if the first thing in a pair and the second thing share lines, make the line opaque and dashed
-      var path = new google.maps.Polyline({
-        path: pair,
-        strokeColor: this.lineColors[line.name],
-        strokeOpacity: this.pairShareLines(pair) ? 0 : 1,
-        //set strokeOpacity to 0 for dashed lines and 1 for solid
-        strokeWeight: 4,
-        icons: this.pairShareLines(pair) ? dashed : null
-      })
+      //if the first thing in a pair and the second thing share lines, make the line opaque and dashed
+      lineType = this.pairShareLines(pair) ? 'dashed' : null
+      var path = this.drawLineSegment(pair, lineType, line)
+
       google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
       google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
       path.setMap(this.map)
       // this.lineObjects[line.name] = path
       this.storeLineSegment(line, path)
+    })
+  }
+  drawLineSegment(pairOfLatLng, lineType, line) {
+    const lineSymbol = {
+          path: 'M 0,-1 0,1',
+          strokeOpacity: 1,
+          strokeWeight: 3,
+          scale: 3
+       };
+    const dashed = [{
+          icon: lineSymbol,
+          offset: '0',
+          repeat: '20px'
+      }]
+    return new google.maps.Polyline({
+      path: pairOfLatLng,
+      strokeColor: this.lineColors[line.name],
+      strokeOpacity: (lineType === 'dashed') ? 0 : 1,
+      //set strokeOpacity to 0 for dashed lines and 1 for solid
+      strokeWeight: 4,
+      icons: (lineType === 'dashed') ? dashed : null
     })
   }
 
@@ -171,7 +176,8 @@ class Map extends React.Component {
     const circle = new google.maps.Circle({
       center: station,
       radius: 10,
-      fillColor: '#FF0000'
+      fillColor: '#FF0000',
+      zIndex: 1
     })
     google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(station.name))
     google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(" "))
