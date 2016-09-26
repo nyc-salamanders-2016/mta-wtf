@@ -32,14 +32,42 @@ class Map extends React.Component {
     this.mapStyles = [
       {
         featureType: 'road',
-        elementType: 'labels',
+        // elementType: 'labels',
         stylers: [
           { visibility: 'off' }
         ]
       },
       {
+        featureType: 'road.arterial',
+        // elementType: 'labels',
+        stylers: [
+          { visibility: 'on' }
+        ]
+      },
+      {
         featureType: 'poi',
         // elementType: 'labels',
+        stylers: [
+          { visibility: 'off' }
+        ]
+      },
+      {
+        featureType: 'poi.park',
+        // elementType: 'labels',
+        stylers: [
+          { visibility: 'on' }
+        ]
+      },
+      {
+        featureType: 'poi.business',
+        // elementType: 'labels',
+        stylers: [
+          { visibility: 'off' }
+        ]
+      },
+      {
+        featureType: 'administrative',
+        elementType: 'labels',
         stylers: [
           { visibility: 'off' }
         ]
@@ -68,9 +96,10 @@ class Map extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    nextProps.liveStatus.forEach((update) => {
+    const status = nextProps.liveStatus.filter((x) => x)
+    status.forEach((update) => {
       if (update.canceled === true) { this.lineObjects[update.line].forEach((segment) => segment.setMap(null)) }
-      else { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
+      else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
     })
   }
 
@@ -173,11 +202,15 @@ class Map extends React.Component {
 
   markStation(station) {
     const google = this.props.google
-    const circle = new google.maps.Circle({
-      center: station,
-      radius: 10,
-      fillColor: '#FF0000',
-      zIndex: 1
+    const circle = new google.maps.Marker({
+      position: station,
+      title: station.name,
+      icon: {
+        fillColor: '#FF0000',
+        fillOpacity: 1,
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 2
+      }
     })
     google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(station.name))
     google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(" "))
