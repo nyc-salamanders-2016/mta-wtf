@@ -4,12 +4,13 @@ class App extends React.Component {
     this.state = {
       infoWindow: "key",
       liveStatus: [],
-      lineToggle: {}
+      lineToggles: {}
     }
 
     this.setInfoWindowLine = this.setInfoWindowLine.bind(this)
     this.setInfoWindowStation = this.setInfoWindowStation.bind(this)
     this.mouseCoords = this.mouseCoords.bind(this)
+    this.toggleLineCheckbox = this.toggleLineCheckbox.bind(this)
   }
 
   componentDidMount() {
@@ -22,19 +23,17 @@ class App extends React.Component {
       })
 
     })
-    // lineToggle = {
-    //   for (i=0; i < this.props.lines.length; i++) {
-    //     this.props.lines[i] checkbox: true
-    //   }
-    // }
 
+    this.props.lines.forEach((line)=> {
+      this.state.lineToggles[line.name] = true
+    })
+  }
 
-
-    // lineToggle = {
-    //   this.props.lines.forEach((line) => {
-    //     checkBox: true
-    //   })
-    // }
+  toggleLineCheckbox(line_name, bool) {
+    toggle = { [line_name]: bool }
+    old_setting = this.state.lineToggles
+    new_setting = Object.assign(old_setting, toggle)
+    this.setState(({lineToggles: new_setting}))
   }
 
   setInfoWindowLine(line) {
@@ -56,18 +55,6 @@ class App extends React.Component {
     })
   }
 
-  // checkedBox(select) {
-  //   this.setState({
-  //   lineToggle = {
-  //     this.props.lines.forEach((line) => {
-  //       if (checkbox === true) {
-  //         checkbox = false
-  //       } else
-  //       {checkbox = true}
-  //     })
-  //   })
-  // }
-
   render() {
     const mapStyle = {
       width: '60%',
@@ -77,11 +64,11 @@ class App extends React.Component {
     return (
       <div id="wrapper">
         <div id="left-content">
-        <FilterLine checkBoxIndicator={this.checkedBox} lines={this.props.lines}/>
+        <FilterLine toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines}/>
         <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showLine={this.state.infoWindowLine} />
         <StationWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showStation={this.state.infoWindowStation} />
         </div>
-        <Map trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindowLine} stationHover={this.setInfoWindowStation} />
+        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindowLine} stationHover={this.setInfoWindowStation} />
       </div>
     )
   }

@@ -12,7 +12,7 @@ class FilterLine extends React.Component {
         {
           this.props.lines.map((line,i) => {
             return (
-              <Line data={line} key={i} />
+              <Line toggleLineCheckbox={this.props.toggleLineCheckbox} data={line} key={i} />
             )
           })
         }
