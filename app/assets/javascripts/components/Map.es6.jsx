@@ -45,6 +45,7 @@ class Map extends React.Component {
         ]
       }
     ]
+    this.pairShareLines = this.pairShareLines.bind(this)
   }
 
   componentDidMount() {
@@ -101,45 +102,17 @@ class Map extends React.Component {
     })
   }
 
-  // getLineCoords(line) {
-  //   const stations = this.sortStations(line)
-  //   return stations.map((station) => {
-  //     let newLng = station.lng + (line.id * 0.0001)
-  //     let newLat = station.lat + (line.id * 0.0001)
-  //     return {lat: newLat, lng: newLng}
-  //   })
+  // stationHasMultipleLines(station){
+  //   if (station.line_stations.length > 1) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
   // }
 
   stationHasMultipleLines(station){
-    if (station.line_stations.count > 1) {
-      return true
-    }
+    return station.line_stations.length > 1
   }
-
-  // drawDashedLine(line){
-  //   const google = this.props.google
-  //   const lineSymbol = {
-  //       path: 'M 0,-1 0,1',
-  //       strokeOpacity: 1,
-  //       strokeWeight: 4,
-  //       scale: 3
-  //    };
-  //   const path = new google.maps.Polyline({
-  //     path: this.dashedLinePath(line),
-  //     strokeColor: this.lineColors[line.name],
-  //     strokeOpacity: 0,
-  //     strokeWeight: 4,
-  //     icons: [{
-  //           icon: lineSymbol,
-  //           offset: '0',
-  //           repeat: '20px'
-  //         }]
-  //   })
-  //   // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
-  //   google.maps.event.addListener(path, "mouseover", () => this.props.handleHover(line.name))
-  //   path.setMap(this.map)
-  //   this.lineObjects[line.name] = path
-  // }
 
   stationPairs(line) {
     return this.sortStations(line).reduce((results, station, index, stations) => {
@@ -147,12 +120,14 @@ class Map extends React.Component {
         return results.concat([[station, stations[index+1]]])
       } else { return results }
     }, [])
+    debugger
   }
 
   pairShareLines(pair){
-    if (this.stationHasMultipleLines(pair[0]) && this.stationHasMultipleLines(pair[1]) && pair[0].line_stations[0].line_id == pair[1].line_stations[0].line_id){
+    if (this.stationHasMultipleLines(pair[0]) && this.stationHasMultipleLines(pair[1]) && pair[0].line_stations[0].line_id === pair[1].line_stations[0].line_id){
       return true
     }
+    return false
   }
 
   drawLine(line) {
@@ -161,7 +136,7 @@ class Map extends React.Component {
       const lineSymbol = {
             path: 'M 0,-1 0,1',
             strokeOpacity: 1,
-            strokeWeight: 4,
+            strokeWeight: 3,
             scale: 3
          };
       const dashed = [{
@@ -170,7 +145,7 @@ class Map extends React.Component {
             repeat: '20px'
         }]
         //if the first thing in a pair and the second thing share lines, make the line opaque and dashed
-      const path = new google.maps.Polyline({
+      var path = new google.maps.Polyline({
         path: pair,
         strokeColor: this.lineColors[line.name],
         strokeOpacity: this.pairShareLines(pair) ? 0 : 1,
@@ -178,7 +153,6 @@ class Map extends React.Component {
         strokeWeight: 4,
         icons: this.pairShareLines(pair) ? dashed : null
       })
-      // console.log(path.getPath().b.map((point) => {return {lat: point.lat(), lng: point.lng()}}))
       google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
       google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
       path.setMap(this.map)
