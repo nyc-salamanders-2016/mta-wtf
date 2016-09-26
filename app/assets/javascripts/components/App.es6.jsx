@@ -50,6 +50,7 @@ class App extends React.Component {
     return (
       <div id="wrapper">
         <div id="left-content">
+        <FilterLine lines={this.props.lines}/>
         <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showLine={this.state.infoWindowLine} />
         <StationWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showStation={this.state.infoWindowStation} />
         </div>
