@@ -21,7 +21,6 @@ class App extends React.Component {
       this.setState({
         liveStatus: response
       })
-
     })
 
     this.props.lines.forEach((line)=> {

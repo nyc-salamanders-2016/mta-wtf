@@ -28,7 +28,11 @@ class Line extends React.Component {
       7: '#B933AD',
       '7E': '#B933AD'
     }
-}
+  }
+
+  componentDidMount() {
+    this.props.gatherCheckboxes(this.refs.selectbox)
+  }
 
   render () {
     return(
