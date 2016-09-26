@@ -8,9 +8,11 @@ class PagesController < ApplicationController
   end
 
   def latest
+    # xml = File.read('db/mta_feed/20160924122800.txt')
     xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt'))
     hash = Hash.from_xml(xml)
-    html = hash['service']['subway']['line'].reduce('') do |string, hash|
+    problem_lines = hash['service']['subway']['line'].reject{|line| line['status'] == 'GOOD SERVICE'}
+    html = problem_lines.reduce('') do |string, hash|
       if hash['text']
         string + hash['text']
       else
@@ -18,6 +20,7 @@ class PagesController < ApplicationController
       end
     end
     nok = Nokogiri::HTML(html)
+    # binding.pry
     info = parse_all_live_data(nok)
     render json: info
   end
@@ -30,15 +33,34 @@ class PagesController < ApplicationController
   def parse_all_live_data(nok)
     result = []
     result += find_all_cancelations(nok)
+    result += find_all_delays(nok)
+  end
+
+  def find_all_delays(nok)
+    strings = nok.css('p').map(&:text).select{|str| str.match('delay')}
+    matches = strings.map {|text| text.match(/Due to (?<reason>.+) at (?<station>.+?), (?:(?<direction>\w+)\s)?(?<lines>\[.+\]) trains/)}
+    matches.map {|match| parse_delay(match) if match}.flatten
+  end
+
+  def parse_delay(match, status='delays')
+    match['lines'].scan(/\[(.)\]/).flatten.map do |line|
+      {
+        line: line,
+        status: 'delays',
+        reason: match['reason'],
+        reason_station: match['station'],
+        direction: match['direction']
+      }
+    end
   end
 
   def find_all_cancelations(nok)
     strings = nok.css('b').map(&:inner_text).select {|string| string.match(/\[(.)\] No trains/) }
     matches = strings.map {|text| text.match(/\[(.)\] No trains (.*)/) }
-    matches.map {|match| parse_value(match)}
+    matches.map {|match| parse_cancellation(match)}
   end
 
-  def parse_value(match)
+  def parse_cancellation(match)
     hash = {}
     hash[:line] = match[1]
     case match[2]
