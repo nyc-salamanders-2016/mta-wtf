@@ -21,3 +21,8 @@ CSV.foreach(path, {headers: true, converters: :numeric, header_converters: :symb
   station.assign_attributes(name: row[:stop_name], lat: row[:stop_lat], lng: row[:stop_lon])
   station.save
 end
+
+Line.all.each do |line|
+  stations = line.stations
+  
+end
