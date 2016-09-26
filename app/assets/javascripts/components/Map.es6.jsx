@@ -114,19 +114,6 @@ class Map extends React.Component {
     this.lineObjects[line_name].forEach((segment) => segment.setMap(null))
   }
 
-    nextProps.lines.forEach((line) => {
-      if (nextProps.lineToggles[line.name]) {
-        this.showLine(line.name)
-      } else {
-        this.hideLine(line.name)
-      }
-    })
-  }
-
-  hideLine(line_name) {
-    this.lineObjects[line_name].forEach((segment) => segment.setMap(null))
-  }
-
   showLine(line_name) {
     this.lineObjects[line_name].forEach((segment) => segment.setMap(this.map))
   }
