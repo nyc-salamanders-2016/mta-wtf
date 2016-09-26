@@ -98,9 +98,24 @@ class Map extends React.Component {
   componentWillReceiveProps(nextProps) {
     const status = nextProps.liveStatus.filter((x) => x)
     status.forEach((update) => {
-      if (update.canceled === true) { this.lineObjects[update.line].forEach((segment) => segment.setMap(null)) }
+      if (update.canceled === true) { this.hideLine(update.line) }
       else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
     })
+    nextProps.lines.forEach((line) => {
+      if (nextProps.lineToggles[line.name]) {
+        this.showLine(line.name)
+      } else {
+        this.hideLine(line.name)
+      }
+    })
+  }
+
+  hideLine(line_name) {
+    this.lineObjects[line_name].forEach((segment) => segment.setMap(null))
+  }
+
+  showLine(line_name) {
+    this.lineObjects[line_name].forEach((segment) => segment.setMap(this.map))
   }
 
   removeClosedStations(line_name, first_station_name, last_station_name) {

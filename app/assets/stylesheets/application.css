@@ -52,6 +52,17 @@
    overflow: scroll;
  }
 
+ #line-input-container {
+   height: 300px;
+   background: #ff99c2;
+   margin-top: 20px;
+   width: auto;
+   border: 1px solid black;
+   margin-left: 50px;
+   overflow: scroll;
+ }
+
+
  #wrapper {
    width: 100%;
    overflow: hidden;

@@ -3,12 +3,14 @@ class App extends React.Component {
     super()
     this.state = {
       infoWindow: "key",
-      liveStatus: []
+      liveStatus: [],
+      lineToggles: {}
     }
 
     this.setInfoWindowLine = this.setInfoWindowLine.bind(this)
     this.setInfoWindowStation = this.setInfoWindowStation.bind(this)
     this.mouseCoords = this.mouseCoords.bind(this)
+    this.toggleLineCheckbox = this.toggleLineCheckbox.bind(this)
   }
 
   componentDidMount() {
@@ -19,7 +21,19 @@ class App extends React.Component {
       this.setState({
         liveStatus: response
       })
+
     })
+
+    this.props.lines.forEach((line)=> {
+      this.state.lineToggles[line.name] = true
+    })
+  }
+
+  toggleLineCheckbox(line_name, bool) {
+    toggle = { [line_name]: bool }
+    old_setting = this.state.lineToggles
+    new_setting = Object.assign(old_setting, toggle)
+    this.setState(({lineToggles: new_setting}))
   }
 
   setInfoWindowLine(line) {
@@ -50,10 +64,11 @@ class App extends React.Component {
     return (
       <div id="wrapper">
         <div id="left-content">
+        <FilterLine toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines}/>
         <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showLine={this.state.infoWindowLine} />
         <StationWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showStation={this.state.infoWindowStation} />
         </div>
-        <Map trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindowLine} stationHover={this.setInfoWindowStation} />
+        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindowLine} stationHover={this.setInfoWindowStation} />
       </div>
     )
   }
