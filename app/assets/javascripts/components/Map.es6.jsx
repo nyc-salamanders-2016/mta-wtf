@@ -101,6 +101,7 @@ class Map extends React.Component {
       if (update.canceled === true) { this.hideLine(update.line) }
       else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
     })
+
     nextProps.lines.forEach((line) => {
       if (nextProps.lineToggles[line.name]) {
         this.showLine(line.name)
