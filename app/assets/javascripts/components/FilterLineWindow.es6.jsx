@@ -21,7 +21,7 @@ class FilterLineWindow extends React.Component {
     return(
       <div id="line-input-container">
       <h2 onClick={this.toggleLines}>Subway Lines</h2>
-      { this.state.linesDisplayed ? <LineList toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} /> : null }
+      { this.state.linesDisplayed ? <LineList toggleLineCheckbox={this.props.toggleLineCheckbox} lines={this.props.lines} /> : null }
       </div>
     )
   }

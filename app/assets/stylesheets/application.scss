@@ -13,6 +13,10 @@
  *= require_tree .
  *= require_self
  */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
 * {
   box-sizing: border-box;
 }
