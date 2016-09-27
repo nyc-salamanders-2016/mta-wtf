@@ -73,7 +73,6 @@ class Map extends React.Component {
         ]
       }
     ]
-    this.pairShareLines = this.pairShareLines.bind(this)
     this.lines = {}
   }
 
@@ -118,16 +117,28 @@ class Map extends React.Component {
     }, [])
   }
 
+  offsetStationPosition(station, lat_offset, lng_offset) {
+    return {
+      lat: station.lat + lat_offset,
+      lng: station.lng + lng_offset
+    }
+  }
+
   drawLines(station) {
     station = station || this.props.stations[0]
     const connecting_stations = this.getStationConnections(station)
     connecting_stations.forEach((other_station)=> {
       const name = [station.mta_id, other_station.mta_id].sort().join('_')
       if (!this.lines[name]) {
-        const lines = this.getConnectingLines(station, other_station)
-        const lineType = lines.length > 1 ? 'dashed' : null
-        this.lines[name] = this.drawLineSegment([station, other_station], lineType, lines[0])
-        this.lines[name].setMap(this.map)
+        const lines = this.getConnectingLines(station, other_station).sort((a,b) => a.line_id > b.line_id ? 1 : -1)
+        const lng_offset = (station.lat - other_station.lat) / 100
+        const lat_offset = -(station.lng - other_station.lng) / 100
+        this.lines[name] = lines.map((line, i) => {
+          const factor = i - (lines.length / 2)
+          path = this.drawLineSegment([this.offsetStationPosition(station, lat_offset * factor, lng_offset * factor), this.offsetStationPosition(other_station, lat_offset * factor, lng_offset * factor)], null, line)
+          path.setMap(this.map)
+          return path
+        })
         this.drawLines(other_station)
       }
     })
@@ -184,48 +195,6 @@ class Map extends React.Component {
     })
   }
 
-  // stationHasMultipleLines(station){
-  //   if (station.line_stations.length > 1) {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
-
-  stationHasMultipleLines(station){
-    return station.line_stations.length > 1
-  }
-
-  stationPairs(line) {
-    return this.sortStations(line).reduce((results, station, index, stations) => {
-      if (index < stations.length - 1) {
-        return results.concat([[station, stations[index+1]]])
-      } else { return results }
-    }, [])
-    debugger
-  }
-
-  pairShareLines(pair){
-    if (this.stationHasMultipleLines(pair[0]) && this.stationHasMultipleLines(pair[1]) && pair[0].line_stations[0].line_id === pair[1].line_stations[0].line_id){
-      return true
-    }
-    return false
-  }
-
-  drawLine(line) {
-    const google = this.props.google
-    this.stationPairs(line).forEach((pair)=> {
-      //if the first thing in a pair and the second thing share lines, make the line opaque and dashed
-      lineType = this.pairShareLines(pair) ? 'dashed' : null
-      var path = this.drawLineSegment(pair, lineType, line)
-
-      google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
-      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
-      path.setMap(this.map)
-      // this.lineObjects[line.name] = path
-      this.storeLineSegment(line, path)
-    })
-  }
   drawLineSegment(pairOfLatLng, lineType, line) {
     const lineSymbol = {
           path: 'M 0,-1 0,1',
