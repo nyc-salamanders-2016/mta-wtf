@@ -28,7 +28,8 @@ class FilterLine extends React.Component {
       <div id="line-input-container">
       <h3>Subway Lines</h3>
         <section>
-          <input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><span>Show/Hide all lines</span>
+          <span>Show/Hide all train lines</span>
+          <input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} />
         </section>
         <section>
         {

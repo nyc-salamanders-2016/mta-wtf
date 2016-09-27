@@ -7,7 +7,7 @@ class InfoWindow extends React.Component {
 // }
   stationNames(line) {
     return line.stations.reduce((result, station, index, allStations) => {
-      return result + station.name + "\n" + (index < allStations.length - 1 ? ', ' : ' and ')
+      return result + station.name + (index < allStations.length - 1 ? ', ' : ' and ')
     }, '')
   }
 
@@ -18,11 +18,8 @@ class InfoWindow extends React.Component {
   render(){
     return(
       <div id="info-container" >
-        <h4>Hover over line for more info</h4>
-        <h3>
-          { this.props.showLine ? 'Test' : <p>This is the {this.props.showLine} train.</p> }
-        </h3>
-        <p>This is the {this.props.showLine} train.</p>
+        <h4><em>Hover over line for more info</em></h4>
+        <h3>This is the {this.props.showLine} train.</h3>
         <p>{this.lineInfo(this.props.lines.find((line) => line.name === this.props.showLine))}</p>
       </div>
     )
