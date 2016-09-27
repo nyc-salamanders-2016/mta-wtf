@@ -27,10 +27,10 @@ class FilterLine extends React.Component {
     return(
       <div id="line-input-container">
       <h3>Subway Lines</h3>
-        <section id="henri">
+        <section>
           <input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><span>Show/Hide all lines</span>
         </section>
-
+        <section>
         {
           this.props.lines.map((line,i) => {
             return (
@@ -38,6 +38,7 @@ class FilterLine extends React.Component {
             )
           })
         }
+        </section>
       </div>
     );
   }

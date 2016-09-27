@@ -6,12 +6,7 @@
    padding-bottom: 4px;
    border: double;
    padding-left: 10px;
-}
-
- #header-css img {
-   position: fixed;
-   left: 25%;
-   top: 1%;
+   height: 120px;
 }
 
  #key-container {
