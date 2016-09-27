@@ -90,8 +90,10 @@ class Map extends React.Component {
       })
       google.maps.event.addListener(this.map, 'mousemove', (event) => this.props.trackMouse(event.latLng.lat(), event.latLng.lng()))
 
-      this.props.lines.forEach((line) => this.drawLines(line.stations[0]))
-      this.props.stations.forEach((station) => this.markStation(station))
+      this.props.stations.forEach((station) => {
+        this.markStation(station)
+        this.drawLines(station)
+      })
     }
   }
 
@@ -128,47 +130,53 @@ class Map extends React.Component {
     station = station || this.props.stations[0]
     const connecting_stations = this.getStationConnections(station)
     connecting_stations.forEach((other_station)=> {
-      const name = [station.mta_id, other_station.mta_id].sort().join('_')
-      if (!this.lines[name]) {
-        const lines = this.getConnectingLines(station, other_station).sort((a,b) => a.line_id > b.line_id ? 1 : -1)
-        const angle = Math.atan((station.lng - other_station.lng) / (other_station.lat - station.lat))
-        const lat_offset = Math.sin(angle)
-        const lng_offset = Math.cos(angle)
-        this.lines[name] = lines.map((line, i) => {
-          const factor = (i - (lines.length / 2)) / 10000
-          path = this.drawLineSegment([this.offsetStationPosition(station, lat_offset * factor, lng_offset * factor), this.offsetStationPosition(other_station, lat_offset * factor, lng_offset * factor)], null, line)
-          path.setMap(this.map)
-          return path
-        })
-        this.drawLines(other_station)
+      this.drawLinesBetween(station, other_station)
+    })
+  }
+
+  drawLinesBetween(station, other_station) {
+    const name = [station.mta_id, other_station.mta_id].sort().join('_')
+    const lines = this.getConnectingLines(station, other_station).sort((a,b) => a.line_id > b.line_id ? 1 : -1)
+    const angle = Math.atan((station.lng - other_station.lng) / (other_station.lat - station.lat))
+    const lat_offset = Math.sin(angle)
+    const lng_offset = Math.cos(angle)
+    this.lines[name] = lines.reduce((result,line, i) => {
+      const factor = (i - (lines.length / 2)) / 10000
+      const coords = [this.offsetStationPosition(station, lat_offset * factor, lng_offset * factor), this.offsetStationPosition(other_station, lat_offset * factor, lng_offset * factor)]
+      path = this.drawLineSegment(coords, null, line)
+      google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
+      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
+      path.setMap(this.map)
+      result[line.name] = path
+      return result
+    }, {})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const status = nextProps.liveStatus.filter((x) => x)
+    status.forEach((update) => {
+      if (update.canceled === true) { this.hideLine(update.line) }
+      else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
+    })
+    nextProps.lines.forEach((line) => {
+      if (nextProps.lineToggles[line.name]) {
+        this.showLine(line.name)
+      } else {
+        this.hideLine(line.name)
       }
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    // const status = nextProps.liveStatus.filter((x) => x)
-    // status.forEach((update) => {
-    //   if (update.canceled === true) { this.hideLine(update.line) }
-    //   else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
-    // })
-    // nextProps.lines.forEach((line) => {
-    //   if (nextProps.lineToggles[line.name]) {
-    //     this.showLine(line.name)
-    //   } else {
-    //     this.hideLine(line.name)
-    //   }
-    // })
-  }
-
   hideLine(line_name) {
-    this.lineObjects[line_name].forEach((segment) => segment.setMap(null))
+    Object.keys(this.lines).forEach((station_pair) => this.lines[station_pair][line_name] ? this.lines[station_pair][line_name].setMap(null) : null)
   }
 
   showLine(line_name) {
-    this.lineObjects[line_name].forEach((segment) => segment.setMap(this.map))
+    Object.keys(this.lines).forEach((station_pair) => this.lines[station_pair][line_name] ? this.lines[station_pair][line_name].setMap(this.map) : null)
   }
 
   removeClosedStations(line_name, first_station_name, last_station_name) {
+    this.hideLine(line_name)
     const line = this.props.lines.find((l) => l.name === line_name)
     if (!line) return false
     const remove_from = line.stations.find((station) => first_station_name.match(station.name) || station.name.match(first_station_name.trim()))
@@ -177,7 +185,12 @@ class Map extends React.Component {
     const big_order = this.getStationOrder(remove_from, line) > this.getStationOrder(remove_to, line) ? this.getStationOrder(remove_from, line) : this.getStationOrder(remove_to, line)
     const small_order = this.getStationOrder(remove_from, line) < this.getStationOrder(remove_to, line) ? this.getStationOrder(remove_from, line) : this.getStationOrder(remove_to, line)
     const filtered_line = this.sortStations(line).filter((station) => !(this.getStationOrder(station, line) >= small_order && this.getStationOrder(station, line) <= big_order) )
-    this.lineObjects[line.name].forEach((segment) => segment.setPath(filtered_line) )
+    filtered_line.forEach((station,i)=>{
+      const other_station = filtered_line[i+1]
+      if (other_station) {
+        this.drawLinesBetween(station,other_station)
+      }
+    })
   }
 
 
