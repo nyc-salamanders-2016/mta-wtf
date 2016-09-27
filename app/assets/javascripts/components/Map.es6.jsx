@@ -73,7 +73,7 @@ class Map extends React.Component {
         ]
       }
     ]
-    this.pairShareLines = this.pairShareLines.bind(this)
+    this.lines = {}
   }
 
   componentDidMount() {
@@ -90,9 +90,66 @@ class Map extends React.Component {
       })
       google.maps.event.addListener(this.map, 'mousemove', (event) => this.props.trackMouse(event.latLng.lat(), event.latLng.lng()))
 
-      this.props.lines.forEach((line) => this.drawLine(line))
-      this.props.stations.forEach((station) => this.markStation(station))
+      this.props.stations.forEach((station) => {
+        this.markStation(station)
+        this.drawLines(station)
+      })
     }
+  }
+
+  findStationById(station_id) {
+    return this.props.stations.find((station) => station.id === station_id)
+  }
+
+  findLineById(line_id) {
+    return this.props.lines.find((line) => line.id === line_id)
+  }
+
+  getConnectingLines(a,b) {
+    return a.line_stations.filter((als)=>b.line_stations
+                            .find((bls)=>bls.line_id === als.line_id))
+                          .map((ls)=>this.findLineById(ls.line_id))
+  }
+
+  getStationConnections(station) {
+    return station.line_stations.reduce((result, ls) => {
+      if (ls.next_station_id) result.push(this.findStationById(ls.next_station_id))
+      if (ls.prev_station_id) result.push(this.findStationById(ls.prev_station_id))
+      return result
+    }, [])
+  }
+
+  offsetStationPosition(station, lat_offset, lng_offset) {
+    return {
+      lat: station.lat + lat_offset,
+      lng: station.lng + lng_offset
+    }
+  }
+
+  drawLines(station) {
+    station = station || this.props.stations[0]
+    const connecting_stations = this.getStationConnections(station)
+    connecting_stations.forEach((other_station)=> {
+      this.drawLinesBetween(station, other_station)
+    })
+  }
+
+  drawLinesBetween(station, other_station) {
+    const name = [station.mta_id, other_station.mta_id].sort().join('_')
+    const lines = this.getConnectingLines(station, other_station).sort((a,b) => a.line_id > b.line_id ? 1 : -1)
+    const angle = Math.atan((station.lng - other_station.lng) / (other_station.lat - station.lat))
+    const lat_offset = Math.sin(angle)
+    const lng_offset = Math.cos(angle)
+    this.lines[name] = lines.reduce((result,line, i) => {
+      const factor = (i - (lines.length / 2)) / 10000
+      const coords = [this.offsetStationPosition(station, lat_offset * factor, lng_offset * factor), this.offsetStationPosition(other_station, lat_offset * factor, lng_offset * factor)]
+      path = this.drawLineSegment(coords, null, line)
+      google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
+      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
+      path.setMap(this.map)
+      result[line.name] = path
+      return result
+    }, {})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,14 +168,15 @@ class Map extends React.Component {
   }
 
   hideLine(line_name) {
-    this.lineObjects[line_name].forEach((segment) => segment.setMap(null))
+    Object.keys(this.lines).forEach((station_pair) => this.lines[station_pair][line_name] ? this.lines[station_pair][line_name].setMap(null) : null)
   }
 
   showLine(line_name) {
-    this.lineObjects[line_name].forEach((segment) => segment.setMap(this.map))
+    Object.keys(this.lines).forEach((station_pair) => this.lines[station_pair][line_name] ? this.lines[station_pair][line_name].setMap(this.map) : null)
   }
 
   removeClosedStations(line_name, first_station_name, last_station_name) {
+    this.hideLine(line_name)
     const line = this.props.lines.find((l) => l.name === line_name)
     if (!line) return false
     const remove_from = line.stations.find((station) => first_station_name.match(station.name) || station.name.match(first_station_name.trim()))
@@ -127,7 +185,12 @@ class Map extends React.Component {
     const big_order = this.getStationOrder(remove_from, line) > this.getStationOrder(remove_to, line) ? this.getStationOrder(remove_from, line) : this.getStationOrder(remove_to, line)
     const small_order = this.getStationOrder(remove_from, line) < this.getStationOrder(remove_to, line) ? this.getStationOrder(remove_from, line) : this.getStationOrder(remove_to, line)
     const filtered_line = this.sortStations(line).filter((station) => !(this.getStationOrder(station, line) >= small_order && this.getStationOrder(station, line) <= big_order) )
-    this.lineObjects[line.name].forEach((segment) => segment.setPath(filtered_line) )
+    filtered_line.forEach((station,i)=>{
+      const other_station = filtered_line[i+1]
+      if (other_station) {
+        this.drawLinesBetween(station,other_station)
+      }
+    })
   }
 
 
@@ -146,48 +209,6 @@ class Map extends React.Component {
     })
   }
 
-  // stationHasMultipleLines(station){
-  //   if (station.line_stations.length > 1) {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
-
-  stationHasMultipleLines(station){
-    return station.line_stations.length > 1
-  }
-
-  stationPairs(line) {
-    return this.sortStations(line).reduce((results, station, index, stations) => {
-      if (index < stations.length - 1) {
-        return results.concat([[station, stations[index+1]]])
-      } else { return results }
-    }, [])
-    debugger
-  }
-
-  pairShareLines(pair){
-    if (this.stationHasMultipleLines(pair[0]) && this.stationHasMultipleLines(pair[1]) && pair[0].line_stations[0].line_id === pair[1].line_stations[0].line_id){
-      return true
-    }
-    return false
-  }
-
-  drawLine(line) {
-    const google = this.props.google
-    this.stationPairs(line).forEach((pair)=> {
-      //if the first thing in a pair and the second thing share lines, make the line opaque and dashed
-      lineType = this.pairShareLines(pair) ? 'dashed' : null
-      var path = this.drawLineSegment(pair, lineType, line)
-
-      google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
-      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
-      path.setMap(this.map)
-      // this.lineObjects[line.name] = path
-      this.storeLineSegment(line, path)
-    })
-  }
   drawLineSegment(pairOfLatLng, lineType, line) {
     const lineSymbol = {
           path: 'M 0,-1 0,1',

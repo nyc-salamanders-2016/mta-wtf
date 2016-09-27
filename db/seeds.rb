@@ -23,11 +23,11 @@ CSV.foreach(path, {headers: true, converters: :numeric, header_converters: :symb
 end
 
 Line.all.each do |line|
-  line_stations = line.line_stations
-  line_stations.sort_by {|line_station| line_station.station.order(line)}
-  line_stations.each_with_index do |line_station, i|
-    line_station.next_station = line_stations[i+1].station if line_stations[i+1]
-    line_station.prev_station = line_stations[i-1].station if line_stations[i-1]
+  line_stations = line.line_stations.sort_by {|ls| ls.order}
+  line_stations.each_with_index do |ls, i|
+    ls.next_station = line_stations[i+1].station if line_stations[i+1]
+    ls.prev_station = line_stations[i-1].station if i > 0
+    ls.save
   end
 
 end
