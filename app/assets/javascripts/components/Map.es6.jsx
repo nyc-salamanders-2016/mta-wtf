@@ -131,10 +131,11 @@ class Map extends React.Component {
       const name = [station.mta_id, other_station.mta_id].sort().join('_')
       if (!this.lines[name]) {
         const lines = this.getConnectingLines(station, other_station).sort((a,b) => a.line_id > b.line_id ? 1 : -1)
-        const lng_offset = (station.lat - other_station.lat) / 100
-        const lat_offset = -(station.lng - other_station.lng) / 100
+        const angle = Math.atan((station.lng - other_station.lng) / (other_station.lat - station.lat))
+        const lat_offset = Math.sin(angle)
+        const lng_offset = Math.cos(angle)
         this.lines[name] = lines.map((line, i) => {
-          const factor = i - (lines.length / 2)
+          const factor = (i - (lines.length / 2)) / 10000
           path = this.drawLineSegment([this.offsetStationPosition(station, lat_offset * factor, lng_offset * factor), this.offsetStationPosition(other_station, lat_offset * factor, lng_offset * factor)], null, line)
           path.setMap(this.map)
           return path
