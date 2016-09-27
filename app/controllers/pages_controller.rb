@@ -4,7 +4,7 @@ class PagesController < ApplicationController
 
   def main
     @lines = Line.all.as_json(include: { stations: { include: :line_stations}})
-    @stations = Station.all.as_json(include: :lines)
+    @stations = Station.all.as_json(include: [:lines, :line_stations])
   end
 
   def latest

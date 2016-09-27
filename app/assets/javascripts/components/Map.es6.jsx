@@ -74,6 +74,7 @@ class Map extends React.Component {
       }
     ]
     this.pairShareLines = this.pairShareLines.bind(this)
+    this.lines = {}
   }
 
   componentDidMount() {
@@ -90,18 +91,46 @@ class Map extends React.Component {
       })
       google.maps.event.addListener(this.map, 'mousemove', (event) => this.props.trackMouse(event.latLng.lat(), event.latLng.lng()))
 
-      // this.props.lines.forEach((line) => this.drawLine(line))
+      this.props.lines.forEach((line) => this.drawLines(line.stations[0]))
       this.props.stations.forEach((station) => this.markStation(station))
-      this.drawLines()
     }
   }
 
-  getStationConnections(station) {
-    station.line_stations
+  findStationById(station_id) {
+    return this.props.stations.find((station) => station.id === station_id)
   }
 
-  drawLines() {
+  findLineById(line_id) {
+    return this.props.lines.find((line) => line.id === line_id)
+  }
 
+  getConnectingLines(a,b) {
+    return a.line_stations.filter((als)=>b.line_stations
+                            .find((bls)=>bls.line_id === als.line_id))
+                          .map((ls)=>this.findLineById(ls.line_id))
+  }
+
+  getStationConnections(station) {
+    return station.line_stations.reduce((result, ls) => {
+      if (ls.next_station_id) result.push(this.findStationById(ls.next_station_id))
+      if (ls.prev_station_id) result.push(this.findStationById(ls.prev_station_id))
+      return result
+    }, [])
+  }
+
+  drawLines(station) {
+    station = station || this.props.stations[0]
+    const connecting_stations = this.getStationConnections(station)
+    connecting_stations.forEach((other_station)=> {
+      const name = [station.mta_id, other_station.mta_id].sort().join('_')
+      if (!this.lines[name]) {
+        const lines = this.getConnectingLines(station, other_station)
+        const lineType = lines.length > 1 ? 'dashed' : null
+        this.lines[name] = this.drawLineSegment([station, other_station], lineType, lines[0])
+        this.lines[name].setMap(this.map)
+        this.drawLines(other_station)
+      }
+    })
   }
 
   componentWillReceiveProps(nextProps) {
