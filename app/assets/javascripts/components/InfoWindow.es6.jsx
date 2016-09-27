@@ -1,27 +1,10 @@
 class InfoWindow extends React.Component {
-//   constructor(){
-//   super()
-//     this.state = {
-//       info: something from params idk
-//   }
-// }
-  stationNames(line) {
-    return line.stations.reduce((result, station, index, allStations) => {
-      return result + station.name + (index < allStations.length - 1 ? ', ' : ' and ')
-    }, '')
-  }
-
-  lineInfo(line) {
-    if (line) return `Right now, it stops at ${this.stationNames(line)}`
-  }
-
   render(){
-    return(
-      <div id="info-container" >
-        <p>This is the {this.props.showLine} train.</p>
-        <p>{this.lineInfo(this.props.lines.find((line) => line.name === this.props.showLine))}</p>
-        <p>{this.props.mouseLat}, {this.props.mouseLng}</p>
-        <pre><code>{JSON.stringify(this.props.lines.find((line) => line.name === this.props.showLine), null, 3)}</code></pre>
+    return (
+      <div className="panel panel-default" id="info-container" >
+        <div className="panel-body">
+          { this.props.showStation ? <StationDetails showStation={this.props.showStation} lines={this.props.lines} /> :  this.props.showLine ? <LineDetails showLine={this.props.showLine} lines={this.props.lines} /> : <p>Please hover over a line or station for current service status.</p> }
+        </div>
       </div>
     )
   }

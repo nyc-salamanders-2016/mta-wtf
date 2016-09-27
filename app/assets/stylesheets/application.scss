@@ -24,12 +24,39 @@
    font-family: sans-serif;
  }
 
+ .checkbox-inline {
+   width: 20px;
+   margin: 20px auto;
+ }
+
+ input[type=checkbox] {
+   /* All browsers except webkit*/
+   transform: scale(1.5);
+
+   /* Webkit browsers*/
+   -webkit-transform: scale(2);
+ }
+
+ .checkbox-inline label {
+   font-size: 1.5em;
+   padding: 10px;
+ }
+
+ .texts {
+    margin-left:110px;
+ }
+
+ .line-input {
+    margin:20px;
+    padding:5px;
+}
+
  #map-container {
    float: right;
    position: relative;
    overflow: auto;
    margin-top: 20px;
-   margin-right: 50px;
+   margin-right: 20px;
    /*margin-left: 40%;*/
  }
 
@@ -72,6 +99,6 @@
  #left-content {
    margin-right: 10px;
    overflow: hidden;
-   width: 30%;
+   width: 35%;
    float: left;
  }
