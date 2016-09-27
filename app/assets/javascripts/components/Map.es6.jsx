@@ -115,7 +115,6 @@ class Map extends React.Component {
     })
     const status = nextProps.liveStatus.filter((x) => x)
     status.forEach((update) => {
-      debugger
       if (update.canceled === true) { this.hideLine(update.line) }
       else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
       else if (update.status === 'delays') { this.markDelays(update.line) }
