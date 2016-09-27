@@ -49,7 +49,7 @@ class PagesController < ApplicationController
         status: 'delays',
         reason: match['reason'],
         reason_station: match['station'],
-        direction: match['direction']
+        direction: match['direction'] || 'both'
       }
     end
   end

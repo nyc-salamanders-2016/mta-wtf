@@ -1,7 +1,16 @@
 class Map extends React.Component {
   constructor() {
     super()
-
+    this.dashedStyle = [{
+      icon: {
+            path: 'M 0,-1 0,1',
+            strokeOpacity: 1,
+            strokeWeight: 3,
+            scale: 3
+         },
+      offset: '0',
+      repeat: '20px'
+    }]
     this.lineColors = {
       1: '#EE352E',
       2: '#EE352E',
@@ -97,12 +106,41 @@ class Map extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    nextProps.lines.forEach((line) => {
+      if (nextProps.lineToggles[line.name]) {
+        this.showLine(line.name)
+      } else {
+        this.hideLine(line.name)
+      }
+    })
+    const status = nextProps.liveStatus.filter((x) => x)
+    status.forEach((update) => {
+      debugger
+      if (update.canceled === true) { this.hideLine(update.line) }
+      else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
+      else if (update.status === 'delays') { this.markDelays(update.line) }
+    })
+  }
+
+  markDelays(line_name) {
+    const dashedOptions = {
+      strokeOpacity: 0,
+      icons: this.dashedStyle
+    }
+    Object.keys(this.lines).forEach((station_pair) => this.lines[station_pair][line_name] ? this.lines[station_pair][line_name].setOptions(dashedOptions) : null)
+  }
+
   findStationById(station_id) {
     return this.props.stations.find((station) => station.id === station_id)
   }
 
   findLineById(line_id) {
     return this.props.lines.find((line) => line.id === line_id)
+  }
+
+  getSegmentsBetween(station, other_station) {
+    return this.lines[[station.mta_id, other_station.mta_id].sort().join('_')]
   }
 
   getConnectingLines(a,b) {
@@ -153,21 +191,6 @@ class Map extends React.Component {
     }, {})
   }
 
-  componentWillReceiveProps(nextProps) {
-    const status = nextProps.liveStatus.filter((x) => x)
-    status.forEach((update) => {
-      if (update.canceled === true) { this.hideLine(update.line) }
-      else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
-    })
-    nextProps.lines.forEach((line) => {
-      if (nextProps.lineToggles[line.name]) {
-        this.showLine(line.name)
-      } else {
-        this.hideLine(line.name)
-      }
-    })
-  }
-
   hideLine(line_name) {
     Object.keys(this.lines).forEach((station_pair) => this.lines[station_pair][line_name] ? this.lines[station_pair][line_name].setMap(null) : null)
   }
@@ -211,30 +234,14 @@ class Map extends React.Component {
   }
 
   drawLineSegment(pairOfLatLng, lineType, line) {
-    const lineSymbol = {
-          path: 'M 0,-1 0,1',
-          strokeOpacity: 1,
-          strokeWeight: 3,
-          scale: 3
-       };
-    const dashed = [{
-          icon: lineSymbol,
-          offset: '0',
-          repeat: '20px'
-      }]
     return new google.maps.Polyline({
       path: pairOfLatLng,
       strokeColor: this.lineColors[line.name],
       strokeOpacity: (lineType === 'dashed') ? 0 : 1,
       //set strokeOpacity to 0 for dashed lines and 1 for solid
       strokeWeight: 4,
-      icons: (lineType === 'dashed') ? dashed : null
+      icons: (lineType === 'dashed') ? this.dashedStyle : null
     })
-  }
-
-  storeLineSegment(line, object) {
-    this.lineObjects[line.name] = this.lineObjects[line.name] || []
-    this.lineObjects[line.name].push(object)
   }
 
   markStation(station) {
