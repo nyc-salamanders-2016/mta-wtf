@@ -90,24 +90,33 @@ class Map extends React.Component {
       })
       google.maps.event.addListener(this.map, 'mousemove', (event) => this.props.trackMouse(event.latLng.lat(), event.latLng.lng()))
 
-      this.props.lines.forEach((line) => this.drawLine(line))
+      // this.props.lines.forEach((line) => this.drawLine(line))
       this.props.stations.forEach((station) => this.markStation(station))
+      this.drawLines()
     }
   }
 
+  getStationConnections(station) {
+    station.line_stations
+  }
+
+  drawLines() {
+
+  }
+
   componentWillReceiveProps(nextProps) {
-    const status = nextProps.liveStatus.filter((x) => x)
-    status.forEach((update) => {
-      if (update.canceled === true) { this.hideLine(update.line) }
-      else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
-    })
-    nextProps.lines.forEach((line) => {
-      if (nextProps.lineToggles[line.name]) {
-        this.showLine(line.name)
-      } else {
-        this.hideLine(line.name)
-      }
-    })
+    // const status = nextProps.liveStatus.filter((x) => x)
+    // status.forEach((update) => {
+    //   if (update.canceled === true) { this.hideLine(update.line) }
+    //   else if (update.canceled) { this.removeClosedStations(update.line, update.canceled[0], update.canceled[1]) }
+    // })
+    // nextProps.lines.forEach((line) => {
+    //   if (nextProps.lineToggles[line.name]) {
+    //     this.showLine(line.name)
+    //   } else {
+    //     this.hideLine(line.name)
+    //   }
+    // })
   }
 
   hideLine(line_name) {
