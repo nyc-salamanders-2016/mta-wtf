@@ -1,4 +1,4 @@
-class FilterLine extends React.Component {
+class FilterLineWindow extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -21,7 +21,7 @@ class FilterLine extends React.Component {
     return(
       <div id="line-input-container">
       <h2 onClick={this.toggleLines}>Subway Lines</h2>
-      { this.state.linesDisplayed ? <LineList /> : null }
+      { this.state.linesDisplayed ? <LineList toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} /> : null }
       </div>
     )
   }
