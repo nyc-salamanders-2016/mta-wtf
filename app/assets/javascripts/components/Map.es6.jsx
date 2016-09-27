@@ -97,7 +97,6 @@ class Map extends React.Component {
         streetViewControl: false,
         styles: this.mapStyles
       })
-      google.maps.event.addListener(this.map, 'mousemove', (event) => this.props.trackMouse(event.latLng.lat(), event.latLng.lng()))
 
       this.props.stations.forEach((station) => {
         this.markStation(station)
@@ -184,7 +183,7 @@ class Map extends React.Component {
       const coords = [this.offsetStationPosition(station, lat_offset * factor, lng_offset * factor), this.offsetStationPosition(other_station, lat_offset * factor, lng_offset * factor)]
       path = this.drawLineSegment(coords, null, line)
       google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
-      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(" "))
+      google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(""))
       path.setMap(this.map)
       result[line.name] = path
       return result
@@ -256,14 +255,14 @@ class Map extends React.Component {
         scale: 2
       }
     })
-    google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(station.name))
-    google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(" "))
+    google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(null, station.name))
+    google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(null, ""))
     circle.setMap(this.map)
   }
 
   render() {
     return (
-      <div id="map-container" ref="map" style={this.props.mapStyle}>Mappy mcMapperface</div>
+      <div className="panel panel-default" id="map-container" ref="map" style={this.props.mapStyle}>Mappy mcMapperface</div>
     )
   }
 }

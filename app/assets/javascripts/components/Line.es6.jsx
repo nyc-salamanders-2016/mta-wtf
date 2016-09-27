@@ -36,10 +36,9 @@ class Line extends React.Component {
 
   render () {
     return(
-      <div>
-          <input onChange={(event) => this.props.toggleLineCheckbox(this.props.data.name, this.refs.selectbox.checked)} ref="selectbox" type="checkbox" defaultChecked={true} /><font color={this.lineColors[this.props.data.name]}>{this.props.data.name}</font>
+      <div className="checkbox-inline">
+          <label><input className="line-input" onChange={(event) => this.props.toggleLineCheckbox(this.props.data.name, this.refs.selectbox.checked)} ref="selectbox" type="checkbox" defaultChecked={true} /><font color={this.lineColors[this.props.data.name]}><span className="texts">{this.props.data.name}</span></font></label>
       </div>
     );
   }
 }
-
