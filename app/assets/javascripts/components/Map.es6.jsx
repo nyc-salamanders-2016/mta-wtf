@@ -254,7 +254,7 @@ class Map extends React.Component {
         scale: 2
       }
     })
-    google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(null, station.name))
+    google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(null, station))
     google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(null, ""))
     circle.setMap(this.map)
   }
