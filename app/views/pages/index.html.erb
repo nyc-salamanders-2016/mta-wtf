@@ -1,5 +1,5 @@
-<% xml = File.read('db/mta_feed/20160924122800.txt')%>
-<% #xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt')) %>
+<% #xml = File.read('db/mta_feed/20160924122800.txt')%>
+<% xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt')) %>
 <% hash = Hash.from_xml(xml) %>
 <h2>Updated at: <%= hash['service']['timestamp'] %></h2>
 <p>===========================================================================================================</p>
