@@ -136,6 +136,7 @@ class Map extends React.Component {
 
   drawLinesBetween(station, other_station) {
     const name = [station.mta_id, other_station.mta_id].sort().join('_')
+    if (this.lines[name]) Object.keys(this.lines[name]).forEach((line) => this.lines[name][line].setMap(null))
     const lines = this.getConnectingLines(station, other_station).sort((a,b) => a.line_id > b.line_id ? 1 : -1)
     const angle = Math.atan((station.lng - other_station.lng) / (other_station.lat - station.lat))
     const lat_offset = Math.sin(angle)

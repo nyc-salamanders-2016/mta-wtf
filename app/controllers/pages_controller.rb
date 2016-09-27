@@ -8,8 +8,8 @@ class PagesController < ApplicationController
   end
 
   def latest
-    # xml = File.read('db/mta_feed/20160924122800.txt')
-    xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt'))
+    xml = File.read('db/mta_feed/20160924122800.txt')
+    # xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt'))
     hash = Hash.from_xml(xml)
     problem_lines = hash['service']['subway']['line'].reject{|line| line['status'] == 'GOOD SERVICE'}
     html = problem_lines.reduce('') do |string, hash|
