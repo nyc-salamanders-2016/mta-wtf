@@ -7,9 +7,7 @@ class App extends React.Component {
       lineToggles: {}
     }
 
-    this.setInfoWindowLine = this.setInfoWindowLine.bind(this)
-    this.setInfoWindowStation = this.setInfoWindowStation.bind(this)
-    this.mouseCoords = this.mouseCoords.bind(this)
+    this.setInfoWindow = this.setInfoWindow.bind(this)
     this.toggleLineCheckbox = this.toggleLineCheckbox.bind(this)
   }
 
@@ -35,22 +33,10 @@ class App extends React.Component {
     this.setState(({lineToggles: new_setting}))
   }
 
-  setInfoWindowLine(line) {
+  setInfoWindow(line, station) {
     this.setState({
-      infoWindowLine: line
-    })
-  }
-
-  setInfoWindowStation(station) {
-    this.setState({
+      infoWindowLine: line,
       infoWindowStation: station
-    })
-  }
-
-  mouseCoords(lat, lng) {
-    this.setState({
-      mouseLat: lat,
-      mouseLng: lng
     })
   }
 
@@ -64,10 +50,9 @@ class App extends React.Component {
       <div id="wrapper">
         <div id="left-content">
         <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} />
-        <InfoWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showLine={this.state.infoWindowLine} />
-        <StationWindow mouseLat={this.state.mouseLat} mouseLng={this.state.mouseLng} lines={this.props.lines} showStation={this.state.infoWindowStation} />
+        <InfoWindow lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
         </div>
-        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindowLine} stationHover={this.setInfoWindowStation} />
+        <Map lineToggles={this.state.lineToggles} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.stations} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} />
       </div>
     )
   }
