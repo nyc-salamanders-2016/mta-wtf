@@ -56,8 +56,8 @@ class App extends React.Component {
 
   render() {
     const mapStyle = {
-      width: '60%',
-      height: 700,
+      width: '70%',
+      height: 770,
       border: '1px solid black'
     }
     return (

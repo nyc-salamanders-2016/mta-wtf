@@ -33,6 +33,7 @@
 
  #info-container {
    margin-top: 20px;
+   margin-bottom: 8px;
    height: 300px;
    width: auto;
    background: #E3E5E5;
@@ -63,7 +64,7 @@
    border: 1px solid black;
    margin-left: 50px;
 /*   overflow: auto;*/
--moz-column-count: 3;
+   -moz-column-count: 3;
    -webkit-column-count: 3;
     column-count: 3;
  }

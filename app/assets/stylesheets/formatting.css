@@ -1,12 +1,17 @@
  #header-css {
    background: #80e5ff;
-   width: 92%;
-   margin-left: auto;
-   margin-right: auto;
+   margin-left: 50px;
+   margin-right: 50px;
    margin-top: 12px;
    padding-bottom: 4px;
    border: double;
    padding-left: 10px;
+}
+
+ #header-css img {
+   position: fixed;
+   left: 25%;
+   top: 1%;
 }
 
  #key-container {
