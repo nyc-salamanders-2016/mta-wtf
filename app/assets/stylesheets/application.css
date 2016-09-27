@@ -29,14 +29,13 @@
    overflow: auto;
    margin-top: 20px;
    margin-right: 50px;
-   /*margin-left: 40%;*/
  }
 
  #info-container {
    margin-top: 20px;
    height: 300px;
    width: auto;
-   background: #ff99c2;
+   background: #E3E5E5;
    border: 1px solid black;
    margin-left: 50px;
    overflow: scroll;
@@ -52,14 +51,21 @@
    overflow: scroll;
  }
 
+ #line-input-container #henri {
+   height: 150px;
+ }
+
  #line-input-container {
    height: 300px;
-   background: #ff99c2;
+   background: #E3E5E5;
    margin-top: 20px;
    width: auto;
    border: 1px solid black;
    margin-left: 50px;
-   overflow: scroll;
+/*   overflow: auto;*/
+-moz-column-count: 3;
+   -webkit-column-count: 3;
+    column-count: 3;
  }
 
 
@@ -71,6 +77,6 @@
  #left-content {
    margin-right: 10px;
    overflow: hidden;
-   width: 30%;
+   width: 25%;
    float: left;
  }
