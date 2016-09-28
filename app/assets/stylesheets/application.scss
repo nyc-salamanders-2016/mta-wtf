@@ -80,17 +80,15 @@ span {
 }
 
  #map-container {
-   float: right;
-   position: relative;
    overflow: auto;
    margin-top: 0px;
    margin-right: 0px;
    /*margin-left: 40%;*/
+   flex: 1;
  }
 
  #info-container {
    font-size: 16px;
-   display: flex;
    margin-top: 20px;
    height: auto;
    margin-bottom: 8px;
@@ -98,6 +96,7 @@ span {
    background: #E4F1FE;
    margin-left: 50px;
    overflow: auto;
+   flex: 1;
  }
 
  #line-input-container section {
@@ -106,6 +105,7 @@ span {
 
   #line-wrapper{
     border: 0px;
+    flex: none;
   }
 
   #line-header{
@@ -132,14 +132,18 @@ span {
    width: 100%;
    overflow: hidden;
    height: auto;
+   display: flex;
+   flex-direction: row;
  }
 
  .left-content {
    margin-right: 10px;
    overflow: hidden;
-   width: 30%;
-   float: left;
+   width: 400px;
    height: auto;
+   flex: initial;
+   display: flex;
+   flex-direction: column;
  }
 
   #header-css {
@@ -147,8 +151,10 @@ span {
    margin-left: 50px;
    margin-top: 12px;
    padding-left: 10px;
-   height: auto;
-   width: 25%;
+   flex: initial;
+   width: 100%;
+   height: 200px;
+   min-height: 100px;
 }
 
   #key-container {
@@ -156,6 +162,7 @@ span {
    margin-top: 20px;
    height: auto;
    width: auto;
+   flex: none;
    background: #E4F1FE;
    padding-left: 5px;
    margin-left: 50px;
