@@ -55,7 +55,7 @@ class PagesController < ApplicationController
 
   def find_all_cancelations(nok)
     strings = nok.css('b').map(&:inner_text).select {|string| string.match(/\[(.)\] No trains/) }
-    matches = strings.map {|text| text.match(/\[(.)\] No trains (.*)/) }
+    matches = strings.map {|text| text.match(/\[(.)\] No trains (.*?)[$\[]/) }
     matches.map {|match| parse_cancellation(match)}
   end
 
