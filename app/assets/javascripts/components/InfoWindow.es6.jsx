@@ -1,5 +1,6 @@
 class InfoWindow extends React.Component {
   render(){
+    var line = this.props.lines.find((line) => line.name === this.props.showLine)
     return (
       <div className="panel panel-default" id="info-container" >
         <div className="panel-body">

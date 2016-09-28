@@ -26,7 +26,7 @@ render() {
   return(
     <div>
       <div className="checkbox">
-        <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} />Show/Hide all lines</label>
+        <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><h4>Show/Hide all lines</h4></label>
       </div>
       <section>
       {
