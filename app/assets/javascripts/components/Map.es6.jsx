@@ -239,21 +239,20 @@ class Map extends React.Component {
       strokeOpacity: (lineType === 'dashed') ? 0 : 1,
       //set strokeOpacity to 0 for dashed lines and 1 for solid
       strokeWeight: 4,
-      icons: (lineType === 'dashed') ? this.dashedStyle : null
+      icons: (lineType === 'dashed') ? this.dashedStyle : null,
+      zindex: 1
     })
   }
 
   markStation(station) {
     const google = this.props.google
-    const circle = new google.maps.Marker({
-      position: station,
-      title: station.name,
-      icon: {
-        fillColor: '#FF0000',
-        fillOpacity: 1,
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 2
-      }
+    const circle = new google.maps.Circle({
+      center: station,
+      fillColor: 'black',
+      fillOpacity: 1,
+      strokeColor: 'black',
+      radius: 25,
+      zindex: 10
     })
     google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(null, station))
     google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(null, ""))
