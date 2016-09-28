@@ -32,7 +32,7 @@ render() {
       {
         this.props.lines.map((line,i) => {
           return (
-            <Line gatherCheckboxes={this.gatherCheckboxes} toggleLineCheckbox={this.props.toggleLineCheckbox} data={line} key={i} />
+            <Line shouldBeActive={this.props.lineToggles[line.name]} gatherCheckboxes={this.gatherCheckboxes} toggleLineCheckbox={this.props.toggleLineCheckbox} data={line} key={i} />
           )
         })
       }

@@ -51,7 +51,7 @@ class App extends React.Component {
         <div className="left-content">
           <NavBar />
           <KeyWindow />
-          <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} />
+          <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} lineToggles={this.state.lineToggles} />
           <InfoWindow lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
         </div>
         <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} />
