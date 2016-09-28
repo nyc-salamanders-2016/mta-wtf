@@ -41,6 +41,7 @@ class App extends React.Component {
   }
 
   render() {
+    liveStatus = this.state.liveStatus.filter( (x) => x )
     const mapStyle = {
       width: '67%',
       height: 900,
@@ -52,9 +53,9 @@ class App extends React.Component {
           <NavBar />
           <KeyWindow />
           <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} lineToggles={this.state.lineToggles} />
-          <InfoWindow lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
+          <InfoWindow liveStatus={liveStatus} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
         </div>
-        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={this.state.liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} />
+        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} />
       </div>
     )
   }
