@@ -21,6 +21,19 @@
 * {
   box-sizing: border-box;
 }
+
+.btn {
+  background-color: #E26A6A;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10%;
+  border: 0;
+  margin-left: 37%;
+}
+
+.btn:hover{
+  background-color: #F1A9A0;
+}
 .checkbox input{
   transform:scale(1.3);
 }
