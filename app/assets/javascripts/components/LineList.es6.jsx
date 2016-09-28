@@ -26,9 +26,9 @@ render() {
   return(
     <div>
       <div className="checkbox">
-        <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><h4>Show/Hide all lines</h4></label>
+        <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><span>Show/Hide all lines</span></label>
       </div>
-      <section>
+      <div className="row">
       {
         this.props.lines.map((line,i) => {
           return (
@@ -36,7 +36,7 @@ render() {
           )
         })
       }
-      </section>
+      </div>
     </div>
   )
 }
