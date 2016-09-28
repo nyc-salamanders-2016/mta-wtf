@@ -42,7 +42,7 @@ class Line extends React.Component {
 
     return(
       <div>
-          <input className="round-button" onChange={(event) => this.props.toggleLineCheckbox(this.props.data.name, this.refs.selectbox.checked)} ref="selectbox" type="submit" value={this.props.data.name} defaultChecked={true} style={inputStyle}/>
+          <input className={this.props.shouldBeActive ? "round-button" : "round-button round-button-clicked"} onClick={(event) => this.props.toggleLineCheckbox(this.props.data.name, !this.props.shouldBeActive)} ref="selectbox" type="submit" value={this.props.data.name} style={inputStyle}/>
       </div>
     );
   }
