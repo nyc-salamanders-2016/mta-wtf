@@ -14,7 +14,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    refreshPage()
+    this.refreshPage()
 
     this.props.lines.forEach((line)=> {
       this.state.lineToggles[line.name] = true
@@ -66,7 +66,7 @@ class App extends React.Component {
           <NavBar />
           <KeyWindow liveStatus={liveStatus} refreshPage={this.refreshPage} />
           <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} lineToggles={this.state.lineToggles} />
-          <InfoWindow lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} defaultLine={this.state.clickWindowLine} defaultStation={this.state.clickWindowStation} />
+          <InfoWindow liveStatus={liveStatus} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} defaultLine={this.state.clickWindowLine} defaultStation={this.state.clickWindowStation} />
         </div>
         <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle}
              lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} clickInfoWindow={this.clickInfoWindow} />
