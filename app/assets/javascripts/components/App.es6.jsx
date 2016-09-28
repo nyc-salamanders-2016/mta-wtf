@@ -42,13 +42,15 @@ class App extends React.Component {
 
   render() {
     const mapStyle = {
-      width: '60%',
-      height: 700,
+      width: '67%',
+      height: 900,
       border: '1px solid black'
     }
     return (
       <div id="wrapper">
-        <div id="left-content">
+        <div className="left-content">
+          <NavBar />
+          <KeyWindow />
           <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} />
           <InfoWindow lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
         </div>
