@@ -25,11 +25,10 @@ class LineList extends React.Component {
 render() {
   return(
     <div>
-    <h4> Solid Line: trains are running</h4>
-    <h4> Dashed Line: trains are delayed</h4>
       <div className="checkbox">
         <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} />Show/Hide all lines</label>
       </div>
+      <section>
       {
         this.props.lines.map((line,i) => {
           return (
@@ -37,6 +36,7 @@ render() {
           )
         })
       }
+      </section>
     </div>
   )
 }
