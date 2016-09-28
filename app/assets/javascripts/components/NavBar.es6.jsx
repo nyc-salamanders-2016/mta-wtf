@@ -2,7 +2,7 @@ class NavBar extends React.Component {
   render(){
     return(
         <nav id="header-css">
-          <img src="../images/logo8.png" />
+          <img id="logo" src="logo8.png" />
         </nav>
     )
   }
