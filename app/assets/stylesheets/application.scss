@@ -28,26 +28,22 @@
    font-size: 14px;
  }
 
- .checkbox-inline {
-   width: 20px;
-   margin: 20px auto;
+ .round-button {
+     display:block;
+     width:50px;
+     height:50px;
+     line-height:50px;
+     border: 1px solid #fff;
+     border-radius: 50%;
+     text-align:center;
+     text-decoration:none;
+     background: #464646;
+     font-size:20px;
+     font-weight:bold;
  }
 
- input[type=checkbox] {
-   /* All browsers except webkit*/
-   transform: scale(1.5);
-
-   /* Webkit browsers*/
-   -webkit-transform: scale(2);
- }
-
- .checkbox-inline label {
-   font-size: 1.5em;
-   padding: 10px;
- }
-
- .texts {
-    margin-left:110px;
+ .round-button:after {
+     opacity: 0.5;
  }
 
  .line-input {
@@ -90,6 +86,9 @@
   border: 1px solid black;
   margin-left: 50px;
   overflow: scroll;
+  -webkit-column-count: 3; /* Chrome, Safari, Opera */
+  -moz-column-count: 3; /* Firefox */
+  column-count: 3;
 }
 
  #wrapper {
@@ -100,7 +99,7 @@
  .left-content {
    margin-right: 10px;
    overflow: hidden;
-   width: 28%;
+   width: 30%;
    float: left;
  }
 
