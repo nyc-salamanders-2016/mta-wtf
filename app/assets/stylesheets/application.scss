@@ -16,9 +16,23 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import 'https://fonts.googleapis.com/css?family=Francois+One';
 
 * {
   box-sizing: border-box;
+}
+.checkbox input{
+  transform:scale(1.3);
+}
+
+span {
+  font-size: 20px;
+}
+
+#line-text {
+  margin-left: 2.3em;
+  font-family: 'Francois One', sans-serif;
+
 }
 
 #logo {
@@ -43,19 +57,22 @@
      display:inline-block;
      width:40px;
      height:40px;
-     line-height:40px;
-     border: 1px solid #fff;
+     line-height:35px;
+     border: 2px solid #fff;
      border-radius: 50%;
      text-align:center;
      text-decoration:none;
-     background: #464646;
      font-size:17px;
      font-weight:bold;
  }
 
  .round-button-clicked {
-     opacity: 0.5;
+     opacity: 0.3;
  }
+
+ input:focus {
+    outline:none;
+}
 
  .line-input {
     margin:20px;
@@ -72,12 +89,13 @@
  }
 
  #info-container {
+   font-size: 16px;
+   display: flex;
    margin-top: 20px;
    height: auto;
    margin-bottom: 8px;
    width: auto;
-   background: #E3E5E5;
-   border: 1px solid black;
+   background: #E4F1FE;
    margin-left: 50px;
    overflow: auto;
  }
@@ -92,26 +110,22 @@
 
   #line-header{
      height: auto;
-     background: #E3E5E5;
+     background: #9CAAB9;
      margin-top: 20px;
      padding-left: 5px;
      width: auto;
-     border: 1px solid black;
-     border-bottom-style: 0.5px;
      margin-left: 50px;
    }
 
  #line-input-container {
   height: auto;
-  background: #E3E5E5;
-  padding-left: 5px;
+  background: #E4F1FE;
+  padding-left: 3em;
+  padding-right: 1em;
   width: auto;
-  border: 1px solid black;
+  border: none;
   margin-left: 50px;
   overflow: scroll;
-  -webkit-column-count: 3; /* Chrome, Safari, Opera */
-  -moz-column-count: 3; /* Firefox */
-  column-count: 3;
 }
 
  #wrapper {
@@ -138,11 +152,11 @@
 }
 
   #key-container {
+  font-size: 18px;
    margin-top: 20px;
-   height: 130px;
+   height: auto;
    width: auto;
-   background: #E3E5E5;
-   border: 1px solid black;
+   background: #E4F1FE;
    padding-left: 5px;
    margin-left: 50px;
    overflow: scroll;
