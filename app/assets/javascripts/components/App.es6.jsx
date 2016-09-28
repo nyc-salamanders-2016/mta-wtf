@@ -32,6 +32,17 @@ class App extends React.Component {
     })
   }
 
+  refreshPage() {
+    $.ajax({
+      url: '/latest',
+      method: 'get'
+    }).done((response) => {
+      this.setState({
+        liveStatus: response
+      })
+    })
+  }
+
   toggleLineCheckbox(line_name, bool) {
     toggle = { [line_name]: bool }
     old_setting = this.state.lineToggles
