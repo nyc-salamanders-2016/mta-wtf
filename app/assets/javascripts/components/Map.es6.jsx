@@ -183,6 +183,7 @@ class Map extends React.Component {
       path = this.drawLineSegment(coords, null, line)
       google.maps.event.addListener(path, "mouseover", () => this.props.lineHover(line.name))
       google.maps.event.addListener(path, "mouseout", () => this.props.lineHover(""))
+      google.maps.event.addListener(path, "click", () => this.props.clickInfoWindow(line.name))
       path.setMap(this.map)
       result[line.name] = path
       return result
@@ -256,6 +257,7 @@ class Map extends React.Component {
     })
     google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(null, station))
     google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(null, ""))
+    google.maps.event.addListener(circle, "click", () => this.props.clickInfoWindow(null, station))
     circle.setMap(this.map)
   }
 

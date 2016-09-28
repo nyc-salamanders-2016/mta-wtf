@@ -9,6 +9,7 @@ class App extends React.Component {
 
     this.setInfoWindow = this.setInfoWindow.bind(this)
     this.toggleLineCheckbox = this.toggleLineCheckbox.bind(this)
+    this.clickInfoWindow = this.clickInfoWindow.bind(this)
   }
 
   componentDidMount() {
@@ -40,6 +41,13 @@ class App extends React.Component {
     })
   }
 
+  clickInfoWindow(line, station) {
+    this.setState({
+      clickWindowLine: line,
+      clickWindowStation: station
+    })
+  }
+
   render() {
     liveStatus = this.state.liveStatus.filter( (x) => x )
     const mapStyle = {
@@ -53,9 +61,10 @@ class App extends React.Component {
           <NavBar />
           <KeyWindow />
           <FilterLineWindow toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} lineToggles={this.state.lineToggles} />
-          <InfoWindow liveStatus={liveStatus} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} />
+          <InfoWindow liveStatus={liveStatus} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} defaultLine={this.state.clickWindowLine} defaultStation={this.state.infoWindowStation} />
         </div>
-        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle} lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} />
+        <Map lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle}
+             lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} clickInfoWindow={this.clickInfoWindow} />
       </div>
     )
   }
