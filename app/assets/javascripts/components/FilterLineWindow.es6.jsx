@@ -20,7 +20,7 @@ class FilterLineWindow extends React.Component {
   render() {
     return(
       <div className="panel panel-default" id="line-wrapper">
-      <div className="panel-heading" id="line-header"><h2 onClick={this.toggleLines}>Choose A Line</h2></div>
+      <div className="panel-heading" id="line-header"><h2 id="line-text" onClick={this.toggleLines}>Click to View Lines</h2></div>
        <div className="panel-body" id="line-input-container">
           { this.state.linesDisplayed ? <LineList lineToggles={this.props.lineToggles} toggleLineCheckbox={this.props.toggleLineCheckbox} lines={this.props.lines} /> : null }
         </div>

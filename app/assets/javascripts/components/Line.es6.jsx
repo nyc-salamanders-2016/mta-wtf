@@ -41,7 +41,7 @@ class Line extends React.Component {
     }
 
     return(
-      <div>
+      <div className="col-md-4">
           <input className={this.props.shouldBeActive ? "round-button" : "round-button round-button-clicked"} onClick={(event) => this.props.toggleLineCheckbox(this.props.data.name, !this.props.shouldBeActive)} ref="selectbox" type="submit" value={this.props.data.name} style={inputStyle}/>
       </div>
     );
