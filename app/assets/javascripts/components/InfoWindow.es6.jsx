@@ -1,15 +1,28 @@
 class InfoWindow extends React.Component {
 
-  getActiveLine() {
-    return this.props.lines.find((line) => line.name === this.props.showLine)
+  getActiveLine(line_name) {
+    return this.props.lines.find((line) => line.name === line_name)
+  }
+
+  whatShouldIShow() {
+    if (this.props.showStation) {
+      return <StationDetails showStation={this.props.showStation} lines={this.props.lines} />
+    } else if (this.props.showLine) {
+      return <LineDetails liveStatus={this.props.liveStatus} line={this.getActiveLine(this.props.showLine)} />
+    } else if (this.props.defaultStation) {
+      return <StationDetails showStation={this.props.defaultStation} lines={this.props.lines} />
+    } else if (this.props.defaultLine) {
+      return <LineDetails liveStatus={this.props.liveStatus} line={this.getActiveLine(this.props.defaultLine)} />
+    } else {
+      return <p>Please hover over a line or station for current service status.</p>
+    }
   }
 
   render(){
-    var line = this.props.lines.find((line) => line.name === this.props.showLine)
     return (
       <div className="panel panel-default" id="info-container" >
         <div className="panel-body">
-          { this.props.showStation ? <StationDetails showStation={this.props.showStation} lines={this.props.lines} /> :  this.props.showLine ? <LineDetails liveStatus={this.props.liveStatus} line={this.getActiveLine()} /> : <p>Please hover over a line or station for current service status.</p> }
+           {this.whatShouldIShow()}
         </div>
       </div>
     )
