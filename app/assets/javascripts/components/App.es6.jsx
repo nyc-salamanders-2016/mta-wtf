@@ -76,7 +76,7 @@ class App extends React.Component {
           <InfoWindow liveStatus={liveStatus} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} defaultLine={this.state.clickWindowLine} defaultStation={this.state.clickWindowStation} />
           <div id="refresh-timestamp">
             <form className="refresh-timestamp">
-              <button onClick={this.refreshPage} type="fresh-button">Reload</button>
+              <button onClick={this.refreshPage} type="button">Reload</button>
             </form>
             <p>Updated: {Date()}</p>
           </div>
