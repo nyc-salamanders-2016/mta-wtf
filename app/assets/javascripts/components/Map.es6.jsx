@@ -240,7 +240,7 @@ class Map extends React.Component {
       //set strokeOpacity to 0 for dashed lines and 1 for solid
       strokeWeight: 4,
       icons: (lineType === 'dashed') ? this.dashedStyle : null,
-      zindex: 1
+      zIndex: 1
     })
   }
 
@@ -252,7 +252,7 @@ class Map extends React.Component {
       fillOpacity: 1,
       strokeColor: 'black',
       radius: 25,
-      zindex: 10
+      zIndex: 2
     })
     google.maps.event.addListener(circle, "mouseover", () => this.props.stationHover(null, station))
     google.maps.event.addListener(circle, "mouseout", () => this.props.stationHover(null, ""))
