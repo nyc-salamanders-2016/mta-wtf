@@ -37,11 +37,11 @@ class PagesController < ApplicationController
 
   def find_all_delays(nok)
     strings = nok.css('p').map(&:text).select{|str| str.match('delay')}
-    matches = strings.map {|text| text.match(/Due to (?<reason>.+) at (?<station>.+?), (?:(?<direction>\w+)\s)?(?<lines>\[.+\]) trains/)}
+    matches = strings.map {|text| text.match(/(?:Due to (?<reason>.+) at (?<station>.+?), (?:(?<direction>\w+)\s)?(?<lines>\[.+\]) trains|Following (?<reason>.+) at (?<station>.+), (?<lines>\[.+\]) service has resumed with residual delays|(?<direction>\w+)bound (?<lines>\[.+\]) trains are running with delays)/) }
     matches.map {|match| parse_delay(match) if match}.flatten
   end
 
-  def parse_delay(match, status='delays')
+  def parse_delay(match)
     match['lines'].scan(/\[(.)\]/).flatten.map do |line|
       {
         line: line,
