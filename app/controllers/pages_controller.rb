@@ -7,21 +7,23 @@ class PagesController < ApplicationController
   end
 
   def latest
-    # xml = File.read('db/mta_feed/20160924122800.txt')
-    xml = Net::HTTP.get(URI('http://web.mta.info/status/serviceStatus.txt'))
+    xml = Net::HTTP.get(URI('http://www.metroalerts.info/rss.aspx?rs'))
+
     hash = Hash.from_xml(xml)
-    problem_lines = hash['service']['subway']['line'].reject{|line| line['status'] == 'GOOD SERVICE'}
-    html = problem_lines.reduce('') do |string, hash|
-      if hash['text']
-        string + hash['text']
-      else
-        string
-      end
+
+    item = hash['rss']['channel']['item']
+
+    delays = []
+
+    item.each do |alert|
+      delays <<
+        {
+          line: alert['title'],
+          status: 'delays'
+        }
     end
-    nok = Nokogiri::HTML(html)
-    # binding.pry
-    info = parse_all_live_data(nok)
-    render json: info
+
+    render json: delays
   end
 
   def all_stations

@@ -12,30 +12,12 @@ class Map extends React.Component {
       repeat: '20px'
     }]
     this.lineColors = {
-      1: '#EE352E',
-      2: '#EE352E',
-      3: '#EE352E',
-      4: '#00933C',
-      5: '#00933C',
-      6: '#00933C',
-      '6E': '#00933C',
-      A: '#0039A6',
-      C: '#0039A6',
-      E: '#0039A6',
-      B: '#FF6319',
-      D: '#FF6319',
-      F: '#FF6319',
-      M: '#FF6319',
-      G: '#6CBE45',
-      J: '#996633',
-      Z: '#996633',
-      L: '#A7A9AC',
-      N: '#FCCC0A',
-      Q: '#FCCC0A',
-      R: '#FCCC0A',
-      S: '#808183',
-      7: '#B933AD',
-      '7E': '#B933AD'
+      'RD': '#C90E0E',
+      'BL': '#2B84E3',
+      'GR': '#18A132',
+      'SL': '#B6B5B1',
+      'OR': '#D39A1D',
+      'YL': '#E0ED26'
     }
     this.lineObjects = {}
     this.mapStyles = [
@@ -292,7 +274,7 @@ class Map extends React.Component {
     // mapTypeId: "hybrid"
     if (!this.map) {
       this.map = new google.maps.Map(this.refs.map, {
-        center: {lat: 40.745, lng: -73.897},
+        center: {lat: 39.000, lng: -77.000},
         zoom: 11,
         mapTypeControl: false,
         streetViewControl: false,
