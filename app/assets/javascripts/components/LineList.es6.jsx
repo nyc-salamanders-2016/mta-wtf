@@ -28,7 +28,7 @@ render() {
       <div className="checkbox row">
         <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><span>Show/Hide all lines</span></label>
       </div>
-      <div className="row" style={{display: "flex", flexFlow: 'row wrap'}}>
+      <div style={{display: "flex", flexFlow: 'row wrap'}}>
       {
         this.props.lines.map((line,i) => {
           return (

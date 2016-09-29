@@ -62,13 +62,13 @@ class App extends React.Component {
     return (
       <div className="container-fluid" id="wrapper">
         <div className="row">
-          <div className='col-md-4' id="left-content">
+          <div className='col-md-3' id="left-content">
             <NavBar className="row" />
             <KeyWindow className="row" liveStatus={liveStatus} refreshPage={this.refreshPage} />
             <FilterLineWindow className="row" toggleLineCheckbox={this.toggleLineCheckbox} lines={this.props.lines} lineToggles={this.state.lineToggles} />
             <InfoWindow className="row" liveStatus={liveStatus} lines={this.props.lines} showLine={this.state.infoWindowLine} showStation={this.state.infoWindowStation} defaultLine={this.state.clickWindowLine} defaultStation={this.state.clickWindowStation} />
           </div>
-          <Map className='col-md-8' lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle}
+          <Map className='col-md-9' lineToggles={this.state.lineToggles} trackMouse={this.mouseCoords} liveStatus={liveStatus} lines={this.props.lines} stations={this.props.lines.reduce((ary,line) => {return ary.concat(line.stations)},[])} google={window.google} mapStyle={mapStyle}
                lineHover={this.setInfoWindow} stationHover={this.setInfoWindow} clickInfoWindow={this.clickInfoWindow} />
         </div>
       </div>
