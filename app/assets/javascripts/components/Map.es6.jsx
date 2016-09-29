@@ -3,9 +3,12 @@ class Map extends React.Component {
     super()
 
     this.lineColors = {
-      'RD': '#EE352E',
-      'BL': '#EE352E',
-      'GR': '#B933AD'
+      'RD': '#C90E0E',
+      'BL': '#2B84E3',
+      'GR': '#18A132',
+      'SL': '#B6B5B1',
+      'OR': '#D39A1D',
+      'YL': '#E0ED26'
     }
     this.lineObjects = {}
     this.mapStyles = [

@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 require 'csv'
 
-path = Rails.root.join('lib', 'seeds', 'dctestdata.csv')
+path = Rails.root.join('lib', 'seeds', 'dcdata.csv')
 
 CSV.foreach(path, {headers: true, converters: :numeric, header_converters: :symbol}) do |row|
   station = Station.find_or_create_by(mta_id: row[:stop_id])
