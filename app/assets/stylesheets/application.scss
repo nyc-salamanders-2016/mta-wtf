@@ -28,7 +28,6 @@
   font-weight: bold;
   border-radius: 10%;
   border: 0;
-  margin-left: 37%;
 }
 
 .btn:hover{
@@ -42,6 +41,11 @@ span {
   font-size: 20px;
 }
 
+#line-text {
+  margin-left: 2.3em;
+  font-family: 'Francois One', sans-serif;
+}
+
  body {
    margin: 0;
    padding: 0;
@@ -49,15 +53,17 @@ span {
    font-size: 14px;
  }
 
- .round-button {
-     line-height:35px;
-     border: 2px solid #fff;
-     border-radius: 50%;
-     text-align:center;
-     text-decoration:none;
-     font-size:17px;
-     font-weight:bold;
- }
+.round-button {
+  width: 40px;
+  height: 40px;
+  line-height:35px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  text-align:center;
+  text-decoration:none;
+  font-size:17px;
+  font-weight:bold;
+}
 
  .round-button-clicked {
      opacity: 0.3;
@@ -67,5 +73,31 @@ span {
     outline:none;
 }
 
+
+
  .line-input {
+}
+
+#info-container {
+  font-size: 16px;
+  background: #E4F1FE;
+  overflow: auto;
+}
+
+#line-header{
+  background: #9CAAB9;
+}
+
+#line-input-container {
+  background: #E4F1FE;
+}
+
+
+#key-container {
+  font-size: 18px;
+  background: #E4F1FE;
+}
+
+#wrapper {
+  max-height: 900px;
 }

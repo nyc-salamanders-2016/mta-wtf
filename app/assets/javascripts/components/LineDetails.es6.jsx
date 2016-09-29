@@ -10,7 +10,7 @@ class LineDetails extends React.Component{
   }
 
   stationNames() {
-    return this.props.line.stations.map((station, i) => <li key={i}>{station.name}</li>)
+    return this.props.line.stations.map((station, i) => <li style={{borderLeft: '1px solid #9CAAB9', paddingLeft: '1%', paddingRight: '1%'}} key={i}>{station.name}</li>)
   }
 
   render(){
@@ -18,7 +18,7 @@ class LineDetails extends React.Component{
       <div>
       <p>This is the {this.props.line.name} train.</p>
       <p>{this.relevantDelays()}</p>
-      <ul>{this.stationNames()}</ul>
+      <ul style={{padding: 0, listStyle: 'none', display: 'flex', justifyContent: 'space-between', flexFlow: 'row wrap'}}>{this.stationNames()}</ul>
       </div>
     )
   }
