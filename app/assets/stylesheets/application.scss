@@ -22,19 +22,33 @@
   box-sizing: border-box;
 }
 
+*:focus {
+    outline: none;
+}
+
+#logo{
+  padding: 1em;
+}
+
 .btn {
   background-color: #E26A6A;
   font-size: 18px;
   font-weight: bold;
   border-radius: 10%;
   border: 0;
+  outline: none;
 }
 
 .btn:hover{
   background-color: #F1A9A0;
 }
+
+.checkbox{
+  color: #000;
+  margin-left: 2em;
+}
 .checkbox input{
-  transform:scale(1.3);
+  transform:scale(1);
 }
 
 span {
@@ -63,43 +77,48 @@ span {
   text-decoration:none;
   font-size:17px;
   font-weight:bold;
+  outline: none;
+  padding: 5px;
 }
 
  .round-button-clicked {
      opacity: 0.3;
      border: none;
+     outline: none;
  }
 
 //  input:focus {
 //     outline:none;
 // }
 
-
-
  .line-input {
 }
 
 #info-container {
   font-size: 16px;
-  background: #757575;
-  color: white;
-  overflow: auto;
+  background: #EEEEEE;
+  color: #000;
+  overflow: scroll;
+}
+
+nav {
+  margin: '10px 0';
 }
 
 #line-header{
-  background: #000;
+  background: #67809F;
   color: white;
 }
 
 #line-input-container {
-  background: #757575;
+  background: #EEEEEE;
 }
 
 
 #key-container {
   font-size: 18px;
-  background: #757575;
-  color: white;
+  background: #EEEEEE;
+  color: #000;
 }
 
 #wrapper {
