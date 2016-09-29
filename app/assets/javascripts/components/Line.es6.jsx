@@ -37,13 +37,12 @@ class Line extends React.Component {
   render () {
     var inputStyle = {
       backgroundColor: this.lineColors[this.props.data.name],
-      color: "#fff"
+      color: "#fff",
+      minWidth: "35px"
     }
 
-    return(
-      <div className="col-md-4">
-          <input className={this.props.shouldBeActive ? "round-button" : "round-button round-button-clicked"} onClick={(event) => this.props.toggleLineCheckbox(this.props.data.name, !this.props.shouldBeActive)} ref="selectbox" type="submit" value={this.props.data.name} style={inputStyle}/>
-      </div>
-    );
+    return (
+      <button className={this.props.shouldBeActive ? "round-button" : "round-button round-button-clicked"} onClick={(event) => this.props.toggleLineCheckbox(this.props.data.name, !this.props.shouldBeActive)} ref="selectbox" style={inputStyle}>{this.props.data.name}</button>
+    )
   }
 }

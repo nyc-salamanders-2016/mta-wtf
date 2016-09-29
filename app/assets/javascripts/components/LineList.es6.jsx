@@ -25,14 +25,14 @@ class LineList extends React.Component {
 render() {
   return(
     <div>
-      <div className="checkbox">
+      <div className="checkbox row">
         <label><input onClick={this.toggleAllCheckboxes} ref="selectbox" type="checkbox" defaultChecked={true} /><span>Show/Hide all lines</span></label>
       </div>
-      <div className="row">
+      <div className="row" style={{display: "flex", flexFlow: 'row wrap'}}>
       {
         this.props.lines.map((line,i) => {
           return (
-            <Line shouldBeActive={this.props.lineToggles[line.name]} gatherCheckboxes={this.gatherCheckboxes} toggleLineCheckbox={this.props.toggleLineCheckbox} data={line} key={i} />
+            <Line style={{flex: 1}} shouldBeActive={this.props.lineToggles[line.name]} gatherCheckboxes={this.gatherCheckboxes} toggleLineCheckbox={this.props.toggleLineCheckbox} data={line} key={i} />
           )
         })
       }
