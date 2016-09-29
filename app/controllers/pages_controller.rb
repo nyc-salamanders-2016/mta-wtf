@@ -39,8 +39,6 @@ class PagesController < ApplicationController
           }
     end
 
-
-    binding.pry
     render json: delays
   end
 

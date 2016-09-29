@@ -22,7 +22,6 @@ class App extends React.Component {
         liveStatus: response
       })
     })
-
     this.props.lines.forEach((line)=> {
       this.state.lineToggles[line.name] = true
     })
