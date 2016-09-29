@@ -50,15 +50,17 @@ span {
 
 #logo {
   width: 300px;
-  margin-left: 2em;
+  margin-left: 0px;
 }
 
- body {
-   margin: 0;
-   padding: 0;
-   font-family: sans-serif;
-   font-size: 14px;
- }
+body {
+  background-image: url(rainbow-paper.png);
+  display: block;
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 14px;
+}
 
  #show-line-box{
    width: 100%;
@@ -182,3 +184,4 @@ span {
    margin-left: 50px;
    overflow: scroll;
  }
+
