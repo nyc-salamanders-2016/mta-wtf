@@ -25,7 +25,7 @@ class PagesController < ApplicationController
   end
 
   def all_stations
-    render json: Line.all.as_json(include: :stations)
+    render json: Line.all.as_json(include: stations: { include: :line_stations})
   end
 
   private
