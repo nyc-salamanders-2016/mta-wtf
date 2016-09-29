@@ -98,6 +98,8 @@ class Map extends React.Component {
         styles: this.mapStyles
       })
 
+      google.maps.event.addListener(this.map, "click", () => this.props.clickInfoWindow(null, null))
+
       this.props.stations.forEach((station) => {
         this.markStation(station)
         this.drawLines(station)
