@@ -28,7 +28,6 @@
   font-weight: bold;
   border-radius: 10%;
   border: 0;
-  margin-left: 37%;
 }
 
 .btn:hover{
@@ -43,14 +42,8 @@ span {
 }
 
 #line-text {
-  margin-left: 2.3em;
+  text-align: center;
   font-family: 'Francois One', sans-serif;
-
-}
-
-#logo {
-  width: 300px;
-  margin-left: 2em;
 }
 
  body {
@@ -60,125 +53,52 @@ span {
    font-size: 14px;
  }
 
- #show-line-box{
-   width: 100%;
-   height: 15px;
-   padding: 10px;
- }
-
- .round-button {
-     display:inline-block;
-     width:40px;
-     height:40px;
-     line-height:35px;
-     border: 2px solid #fff;
-     border-radius: 50%;
-     text-align:center;
-     text-decoration:none;
-     font-size:17px;
-     font-weight:bold;
- }
+.round-button {
+  width: 40px;
+  height: 40px;
+  line-height:35px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  text-align:center;
+  text-decoration:none;
+  font-size:17px;
+  font-weight:bold;
+}
 
  .round-button-clicked {
      opacity: 0.3;
+     border: none;
  }
 
- input:focus {
-    outline:none;
-}
+//  input:focus {
+//     outline:none;
+// }
+
+
 
  .line-input {
-    margin:20px;
-    padding:5px;
 }
 
- #map-container {
-   float: right;
-   position: relative;
-   overflow: auto;
-   margin-top: 0px;
-   margin-right: 0px;
-   /*margin-left: 40%;*/
- }
-
- #info-container {
-   font-size: 16px;
-   display: flex;
-   margin-top: 20px;
-   height: auto;
-   margin-bottom: 8px;
-   width: auto;
-   background: #E4F1FE;
-   margin-left: 50px;
-   overflow: auto;
- }
-
- #refresh-timestamp {
-   margin-top: 20px;
-   margin-bottom: 8px;
-   width: auto;
-   margin-left: 50px;
-   overflow: auto;
- }
-
- #line-input-container section {
-   margin-top: 10%;
-  }
-
-  #line-wrapper{
-    border: 0px;
-  }
-
-  #line-header{
-     height: auto;
-     background: #9CAAB9;
-     margin-top: 20px;
-     padding-left: 5px;
-     width: auto;
-     margin-left: 50px;
-   }
-
- #line-input-container {
-  height: auto;
+#info-container {
+  font-size: 16px;
   background: #E4F1FE;
-  padding-left: 3em;
-  padding-right: 1em;
-  width: auto;
-  border: none;
-  margin-left: 50px;
-  overflow: scroll;
+  overflow: auto;
 }
 
- #wrapper {
-   width: 100%;
-   overflow: hidden;
-   height: auto;
- }
-
- .left-content {
-   margin-right: 10px;
-   overflow: hidden;
-   width: 30%;
-   float: left;
-   height: auto;
- }
-
-  #header-css {
-   background: #fff;
-   margin-left: 50px;
-   margin-top: 12px;
-   padding-left: 10px;
-   height: auto;
-   width: 25%;
+#line-header{
+  background: #9CAAB9;
 }
 
-  #key-container {
+#line-input-container {
+  background: #E4F1FE;
+}
+
+
+#key-container {
   font-size: 18px;
-   margin-top: 20px;
-   height: auto;
-   width: auto;
-   background: #E4F1FE;
-   padding-left: 5px;
-   margin-left: 50px;
-   overflow: scroll;
- }
+  background: #E4F1FE;
+}
+
+#wrapper {
+  max-height: 900px;
+}
